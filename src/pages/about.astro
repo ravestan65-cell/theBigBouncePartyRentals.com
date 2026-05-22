@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="About Us" description="Learn about The Big Bounce Party Rentals — a family-owned party rental company shipping same day across the USA.">
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><span>About Us</span></nav>
+      <h1 class="page-header__title">About The Big Bounce Party Rentals</h1>
+      <p class="page-header__desc">A family-owned party rental company making celebrations magical across the USA</p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section about-mission">
+    <div class="container about-mission__inner">
+      <div class="about-mission__content">
+        <h2 class="about-mission__title">Every Celebration Deserves to Be Special</h2>
+        <p class="about-mission__text">At The Big Bounce Party Rentals, we believe every celebration deserves to be special. Since our founding, we've been committed to providing the highest quality inflatable rentals, exceptional customer service, and creating magical moments that families will treasure forever.</p>
+        <p class="about-mission__text">As a family-owned business, we understand what it takes to throw an amazing party. That's why we treat every event with the same care, attention to detail, and dedication to safety.</p>
+      </div>
+      <div class="about-mission__image">
+        <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="The Big Bounce Party Rentals team at an event" loading="lazy" width="560" height="400" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="about-stats">
+    <div class="container about-stats__inner">
+      <div class="about-stats__item"><span class="about-stats__number">500+</span><span class="about-stats__label">Happy Families</span></div>
+      <div class="about-stats__item"><span class="about-stats__number">1000+</span><span class="about-stats__label">Successful Events</span></div>
+      <div class="about-stats__item"><span class="about-stats__number">5.0</span><span class="about-stats__label">Star Rating</span></div>
+      <div class="about-stats__item"><span class="about-stats__number">24/7</span><span class="about-stats__label">Emergency Support</span></div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section section--alt about-values">
+    <div class="container">
+      <h2 class="section-title">What Sets Us Apart</h2>
+      <p class="section-subtitle">Our commitment to safety, quality, and exceptional service</p>
+      <div class="about-values__grid">
+        <div class="value-card">
+          <h3 class="value-card__title">Professional Cleaning</h3>
+          <p class="value-card__desc">Every unit is deep-cleaned using commercial-grade equipment and hospital-grade disinfectants before and after each rental.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card__title">Safety Inspected</h3>
+          <p class="value-card__desc">All equipment undergoes rigorous safety inspections and meets commercial-grade standards. We never cut corners on safety.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card__title">Quality Guaranteed</h3>
+          <p class="value-card__desc">We use only premium, commercial-grade inflatables maintained to the highest industry standards.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card__title">Fully Insured</h3>
+          <p class="value-card__desc">We carry comprehensive liability insurance so you can focus on having fun, not worrying.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card__title">On-Time Service</h3>
+          <p class="value-card__desc">Professional delivery, setup, and pickup — always on schedule. Your party starts on time.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card__title">Family Owned</h3>
+          <p class="value-card__desc">As a local family business, we bring a personal touch to every event. You're part of our family.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cleaning Process -->
+  <section class="section cleaning-process">
+    <div class="container">
+      <h2 class="section-title">Our 4-Step Sanitization Process</h2>
+      <p class="section-subtitle">We take cleaning seriously</p>
+      <div class="cleaning__grid">
+        <div class="cleaning__step"><div class="cleaning__number">1</div><h3 class="cleaning__title">Deep Clean</h3><p class="cleaning__desc">Thorough cleaning using commercial-grade equipment to remove all dirt and debris.</p></div>
+        <div class="cleaning__step"><div class="cleaning__number">2</div><h3 class="cleaning__title">Disinfect</h3><p class="cleaning__desc">Hospital-grade disinfectant to eliminate 99.9% of bacteria and viruses.</p></div>
+        <div class="cleaning__step"><div class="cleaning__number">3</div><h3 class="cleaning__title">Inspect</h3><p class="cleaning__desc">Complete safety and quality inspection of every seam, anchor point, and surface.</p></div>
+        <div class="cleaning__step"><div class="cleaning__number">4</div><h3 class="cleaning__title">Deliver</h3><p class="cleaning__desc">Clean, safe equipment delivered and professionally set up by our team.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container" style="text-align:center">
+      <h2 class="cta-section__title">Let's Plan Your Next Celebration</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:1rem;max-width:500px;margin:0 auto 1.5rem;">Contact us today for a free quote — we respond within 2 hours!</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+        <a href="/products" class="btn btn--primary btn--lg">Browse Products</a>
+        <a href="/contact" class="btn btn--secondary btn--lg">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header { padding: 6.5rem 0 2rem; background: #fff; border-bottom: 1px solid var(--color-border); }
+  .breadcrumb { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-text-lighter); }
+  .breadcrumb a { color: var(--color-primary); font-weight: 600; }
+  .page-header__title { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.5rem; }
+  .page-header__desc { font-size: 1rem; color: var(--color-text-light); max-width: 600px; }
+
+  .about-mission__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .about-mission__title { font-size: clamp(1.3rem, 3vw, 1.85rem); margin-bottom: 1rem; }
+  .about-mission__text { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.75rem; }
+  .about-mission__image img { width: 100%; border-radius: var(--radius-md); object-fit: cover; aspect-ratio: 4/3; border: 1px solid var(--color-border); }
+
+  .about-stats { background: var(--color-primary); padding: 2.5rem 0; }
+  .about-stats__inner { display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+  .about-stats__item { text-align: center; }
+  .about-stats__number { display: block; font-family: var(--font-heading); font-weight: 900; font-size: 2.25rem; color: white; }
+  .about-stats__label { font-size: 0.8rem; color: rgba(255,255,255,0.7); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  .about-values__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+  .value-card { background: white; border-radius: var(--radius-md); padding: 1.5rem; border: 1px solid var(--color-border); transition: all var(--transition-base); }
+  .value-card:hover { border-color: var(--color-primary); box-shadow: var(--shadow-md); }
+  .value-card__title { font-size: 1rem; margin-bottom: 0.4rem; }
+  .value-card__desc { font-size: 0.85rem; color: var(--color-text-light); line-height: 1.6; }
+
+  .cleaning__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); }
+  .cleaning__step { text-align: center; }
+  .cleaning__number { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; border-radius: 50%; background: var(--color-secondary); color: var(--color-text); font-family: var(--font-heading); font-weight: 900; font-size: 1.1rem; }
+  .cleaning__title { font-size: 1rem; margin-bottom: 0.35rem; }
+  .cleaning__desc { font-size: 0.8rem; color: var(--color-text-light); line-height: 1.5; }
+
+  .cta-section { background: var(--color-primary); padding: var(--space-3xl) 0; }
+  .cta-section__title { font-size: clamp(1.4rem, 3vw, 2rem); color: white; margin-bottom: 0.5rem; }
+
+  @media (max-width: 768px) {
+    .about-mission__inner { grid-template-columns: 1fr; gap: 2rem; }
+    .about-mission__image { order: -1; }
+    .about-stats__inner { gap: 2rem; }
+    .about-values__grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+    .cleaning__grid { grid-template-columns: 1fr 1fr; }
+    .page-header { padding: 5rem 0 1.5rem; }
+    .page-header__title { font-size: 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .page-header { padding: 4.5rem 0 1.25rem; }
+    .about-stats__number { font-size: 1.75rem; }
+    .about-stats__inner { gap: 1.25rem; }
+    .cleaning__grid { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
+    .about-mission__title { font-size: 1.2rem; }
+    .cta-section { padding: var(--space-xl) 0; }
+    .cta-section__title { font-size: 1.25rem; }
+  }
+</style>

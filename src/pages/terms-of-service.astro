@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="Terms of Service" description="Terms of Service for The Big Bounce Party Rentals. Review our terms and conditions for purchases and rentals.">
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><span>Terms of Service</span></nav>
+      <h1 class="page-header__title">Terms of Service</h1>
+      <p class="page-header__desc">Last updated: March 23, 2026</p>
+    </div>
+  </section>
+
+  <section class="section policy-content">
+    <div class="container">
+      <div class="policy">
+        <p class="policy__intro">Welcome to The Big Bounce Party Rentals. By accessing or using our website (thebigbouncepartyrentals.com) and purchasing our products, you agree to be bound by these Terms of Service.</p>
+
+        <h2>1. General</h2>
+        <p>These Terms of Service govern your use of our website and the purchase of products from The Big Bounce Party Rentals. We reserve the right to update these terms at any time. Continued use of our website constitutes acceptance of any changes.</p>
+
+        <h2>2. Products & Pricing</h2>
+        <p>All products listed on our website are available for daily rental or purchase (buy new). Prices are listed in US Dollars (USD) and are subject to change without notice. We make every effort to ensure pricing accuracy, but errors may occur. In such cases, we will notify you and provide the option to proceed or cancel your order.</p>
+
+        <h2>3. Orders & Payment</h2>
+        <ul>
+          <li>All orders are subject to availability and confirmation.</li>
+          <li>We accept major credit cards and other payment methods as displayed at checkout.</li>
+          <li>Payment is required in full at the time of purchase or rental booking.</li>
+          <li>You must provide accurate and complete billing and shipping information.</li>
+        </ul>
+
+        <h2>4. Shipping</h2>
+        <ul>
+          <li>We offer same-day shipping on orders placed before the cutoff time (see our <a href="/shipping-policy">Shipping Policy</a> for details).</li>
+          <li>We ship to all 50 US states.</li>
+          <li>Shipping costs are calculated at checkout based on your location and order size.</li>
+          <li>Delivery times are estimates and not guaranteed.</li>
+        </ul>
+
+        <h2>5. Rental Terms</h2>
+        <ul>
+          <li>Rental pricing is based on a daily rate.</li>
+          <li>Renters are responsible for the proper use and care of rented equipment.</li>
+          <li>Any damage beyond normal wear and tear will be charged to the renter.</li>
+          <li>Equipment must be returned by the agreed-upon date. Late returns may incur additional fees.</li>
+          <li>Renters must follow all safety guidelines provided with the equipment.</li>
+        </ul>
+
+        <h2>6. User Responsibilities</h2>
+        <ul>
+          <li>You must be at least 18 years old to place an order.</li>
+          <li>You are responsible for supervising children when using inflatable equipment.</li>
+          <li>Equipment must be used in accordance with provided safety instructions.</li>
+          <li>You agree not to use our products for any unlawful purpose.</li>
+        </ul>
+
+        <h2>7. Intellectual Property</h2>
+        <p>All content on this website, including text, images, logos, and graphics, is the property of The Big Bounce Party Rentals and is protected by copyright and intellectual property laws. You may not reproduce, distribute, or use our content without written permission.</p>
+
+        <h2>8. Limitation of Liability</h2>
+        <p>The Big Bounce Party Rentals shall not be held liable for any indirect, incidental, special, or consequential damages arising from the use of our products or services. Our total liability is limited to the amount paid for the specific product or service in question.</p>
+
+        <h2>9. Indemnification</h2>
+        <p>You agree to indemnify and hold harmless The Big Bounce Party Rentals, its owners, employees, and affiliates from any claims, damages, or expenses arising from your use of our products or violation of these terms.</p>
+
+        <h2>10. Cancellations</h2>
+        <p>Order cancellations may be accepted if the order has not yet shipped. Once an order has shipped, our <a href="/return-policy">Return & Refund Policy</a> applies. For rental cancellations, please contact us at least 48 hours before the scheduled rental date for a full refund.</p>
+
+        <h2>11. Governing Law</h2>
+        <p>These Terms of Service are governed by and construed in accordance with the laws of the State of Florida, without regard to conflict of law principles.</p>
+
+        <h2>12. Contact Us</h2>
+        <p>If you have questions about these Terms of Service, please contact us:</p>
+        <ul>
+          <li>Email: <a href="mailto:info@thebigbouncepartyrentals.com">info@thebigbouncepartyrentals.com</a></li>
+          <li>Phone: <a href="tel:+17868181728">(786) 818-1728</a></li>
+          <li>Website: thebigbouncepartyrentals.com</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header { padding: 6.5rem 0 2rem; background: #fff; border-bottom: 1px solid var(--color-border); }
+  .breadcrumb { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-text-lighter); }
+  .breadcrumb a { color: var(--color-primary); font-weight: 600; }
+  .page-header__title { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.5rem; }
+  .page-header__desc { font-size: 1rem; color: var(--color-text-light); }
+
+  .policy { max-width: 800px; }
+  .policy__intro { font-size: 1rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 2rem; }
+  .policy h2 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--color-text); }
+  .policy p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.75rem; }
+  .policy ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+  .policy li { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.25rem; }
+  .policy a { color: var(--color-primary); font-weight: 600; }
+  .policy a:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .page-header { padding: 5rem 0 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .page-header { padding: 4.5rem 0 1.25rem; }
+    .policy h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+    .policy p, .policy li { font-size: 0.85rem; }
+  }
+</style>

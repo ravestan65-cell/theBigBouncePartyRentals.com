@@ -1,0 +1,196 @@
+---
+import type { Product } from '../lib/supabase';
+import { getPrimaryImage, getCategoryLabel, getCategorySlug } from '../lib/supabase';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const primaryImage = getPrimaryImage(product);
+const categoryLabel = getCategoryLabel(product);
+const categorySlug = getCategorySlug(product);
+---
+
+<a href={`/products/${product.slug}`} class="product-card card">
+  <div class="product-card__image-wrap">
+    {primaryImage ? (
+      <img
+        class="product-card__image"
+        src={primaryImage.url}
+        alt={primaryImage.alt || product.name}
+        loading="lazy"
+        width="400"
+        height="300"
+      />
+    ) : (
+      <div class="product-card__image-placeholder" data-category={categorySlug}>
+        <span class="product-card__category-label">{categoryLabel}</span>
+      </div>
+    )}
+    {product.badge && <span class="badge product-card__badge">{product.badge}</span>}
+  </div>
+
+  <div class="product-card__body">
+    <h3 class="product-card__title">{product.name}</h3>
+    <p class="product-card__desc">{product.short_description}</p>
+
+    <div class="product-card__specs">
+      <span class="product-card__spec">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        {product.dimensions}
+      </span>
+      <span class="product-card__spec">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        {product.capacity}
+      </span>
+    </div>
+
+    <div class="product-card__pricing">
+      <div class="product-card__price-main">
+        <span class="product-card__price-amount">${product.daily_price}</span>
+        <span class="product-card__price-label">/day</span>
+      </div>
+      <div class="product-card__price-buy">
+        Buy: <strong>${product.buy_price}</strong>
+      </div>
+    </div>
+
+    <span class="btn btn--primary btn--sm product-card__btn">View Details</span>
+  </div>
+</a>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .product-card__image-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .product-card:hover .product-card__image {
+    transform: scale(1.05);
+  }
+
+  .product-card__image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 220px;
+    background: #F0F7FA;
+  }
+
+  .product-card__image-placeholder[data-category="water-slides"] {
+    background: #E8F6FA;
+  }
+
+  .product-card__image-placeholder[data-category="party-accessories"] {
+    background: #FFF8E8;
+  }
+
+  .product-card__category-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-lighter);
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .product-card__body {
+    padding: 1rem 1.1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .product-card__title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    line-height: 1.3;
+  }
+
+  .product-card__desc {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .product-card__spec {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--color-text-lighter);
+  }
+
+  .product-card__pricing {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .product-card__price-amount {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--color-accent);
+  }
+
+  .product-card__price-label {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    margin-left: 0.1rem;
+  }
+
+  .product-card__price-buy {
+    font-size: 0.75rem;
+    color: var(--color-text-lighter);
+  }
+  .product-card__price-buy strong {
+    color: var(--color-text-light);
+  }
+
+  .product-card__btn {
+    align-self: stretch;
+    text-align: center;
+  }
+</style>

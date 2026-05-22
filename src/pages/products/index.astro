@@ -1,0 +1,257 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getProducts, getCategories, getProductsByCategory } from '../../lib/supabase';
+import '../../styles/global.css';
+
+const allProducts = await getProducts();
+const categories = await getCategories();
+
+const bounceHouses = allProducts.filter(p => p.category?.slug === 'bounce-houses');
+const waterSlides = allProducts.filter(p => p.category?.slug === 'water-slides');
+const partyAccessories = allProducts.filter(p => p.category?.slug === 'party-accessories');
+const interactiveGames = allProducts.filter(p => p.category?.slug === 'interactive-games');
+const comboPackages = allProducts.filter(p => p.category?.slug === 'combo-packages');
+---
+
+<Layout title="Products" description="Browse our complete catalog of bounce houses, water slides, and party accessories available for rent or purchase. Same day shipping USA-wide.">
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container page-header__inner">
+      <div class="page-header__left">
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span>/</span>
+          <span>Products</span>
+        </nav>
+        <h1 class="page-header__title">Our Rental Products</h1>
+        <p class="page-header__desc">Premium bounce houses, water slides & party equipment — available for daily rental or purchase.</p>
+        <a href="/contact" class="btn btn--primary btn--lg" style="margin-top: 1.25rem;">Get a Free Quote</a>
+      </div>
+      <div class="page-header__right">
+        <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="Party rentals" class="page-header__img" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Nav -->
+  <div class="filter-bar">
+    <div class="container">
+      <nav class="filter-bar__nav">
+        <a href="#bounce-houses" class="filter-bar__link filter-bar__link--active">All Products ({allProducts.length})</a>
+        <a href="#bounce-houses" class="filter-bar__link">Bounce Houses ({bounceHouses.length})</a>
+        <a href="#water-slides" class="filter-bar__link">Water Slides ({waterSlides.length})</a>
+        <a href="#party-accessories" class="filter-bar__link">Accessories ({partyAccessories.length})</a>
+        {interactiveGames.length > 0 && <a href="#interactive-games" class="filter-bar__link">Games ({interactiveGames.length})</a>}
+        {comboPackages.length > 0 && <a href="#combo-packages" class="filter-bar__link">Packages ({comboPackages.length})</a>}
+      </nav>
+    </div>
+  </div>
+
+  <!-- Bounce Houses -->
+  {bounceHouses.length > 0 && (
+    <section class="section" id="bounce-houses">
+      <div class="container">
+        <div class="category-header">
+          <h2 class="category-header__title">Bounce Houses</h2>
+          <p class="category-header__desc">Classic bounce houses and inflatable castles in various themes</p>
+        </div>
+        <div class="products-grid">
+          {bounceHouses.map(product => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Water Slides -->
+  {waterSlides.length > 0 && (
+    <section class="section section--alt" id="water-slides">
+      <div class="container">
+        <div class="category-header">
+          <h2 class="category-header__title">Water Slides</h2>
+          <p class="category-header__desc">Thrilling water slides perfect for summer parties and hot days</p>
+        </div>
+        <div class="products-grid">
+          {waterSlides.map(product => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Party Accessories -->
+  {partyAccessories.length > 0 && (
+    <section class="section" id="party-accessories">
+      <div class="container">
+        <div class="category-header">
+          <h2 class="category-header__title">Party Accessories</h2>
+          <p class="category-header__desc">Tables, chairs, concession machines, and fun extras</p>
+        </div>
+        <div class="products-grid">
+          {partyAccessories.map(product => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Interactive Games -->
+  {interactiveGames.length > 0 && (
+    <section class="section section--alt" id="interactive-games">
+      <div class="container">
+        <div class="category-header">
+          <h2 class="category-header__title">Interactive Games</h2>
+          <p class="category-header__desc">Inflatable sports challenges and interactive party games for all ages</p>
+        </div>
+        <div class="products-grid">
+          {interactiveGames.map(product => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Combo Packages -->
+  {comboPackages.length > 0 && (
+    <section class="section" id="combo-packages">
+      <div class="container">
+        <div class="category-header">
+          <h2 class="category-header__title">Combo Packages</h2>
+          <p class="category-header__desc">Complete startup packages with multiple inflatables and accessories</p>
+        </div>
+        <div class="products-grid">
+          {comboPackages.map(product => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .page-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 380px;
+    padding-top: 2rem;
+  }
+  .page-header__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-3xl);
+  }
+  .page-header__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .page-header__right {
+    height: 280px;
+  }
+  .page-header__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    border-radius: var(--radius-xl);
+  }
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-text-lighter);
+  }
+  .breadcrumb a { color: var(--color-primary); font-weight: 600; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header__title { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.5rem; color: var(--color-text); }
+  .page-header__desc { font-size: 1rem; color: var(--color-text-light); max-width: 500px; }
+
+  @media (max-width: 768px) {
+    .page-header__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .page-header__right {
+      min-height: 200px;
+    }
+    .page-header__img {
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    position: sticky;
+    top: 48px;
+    z-index: 50;
+    background: #FFFFFF;
+    border-bottom: 2px solid var(--color-secondary);
+  }
+  .filter-bar__nav {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-bar__link {
+    padding: 0.7rem 1.25rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    transition: all var(--transition-fast);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .filter-bar__link:hover,
+  .filter-bar__link--active {
+    color: var(--color-text);
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* Category header */
+  .category-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .category-header__title { font-size: 1.35rem; margin-bottom: 0.25rem; }
+  .category-header__desc { font-size: 0.9rem; color: var(--color-text-light); }
+
+  /* Products grid */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 1024px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .filter-bar__link { font-size: 0.75rem; padding: 0.5rem 0.75rem; }
+    .page-header { min-height: auto; padding-top: 1rem; }
+    .page-header__title { font-size: 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .filter-bar__link { font-size: 0.68rem; padding: 0.45rem 0.6rem; }
+    .category-header__title { font-size: 1.1rem; }
+    .page-header__desc { font-size: 0.88rem; }
+  }
+</style>

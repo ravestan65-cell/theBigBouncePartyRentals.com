@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="Shipping Policy" description="Shipping Policy for The Big Bounce Party Rentals. Same day shipping across the USA on all orders.">
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><span>Shipping Policy</span></nav>
+      <h1 class="page-header__title">Shipping Policy</h1>
+      <p class="page-header__desc">Last updated: March 23, 2026</p>
+    </div>
+  </section>
+
+  <section class="section policy-content">
+    <div class="container">
+      <div class="policy">
+        <p class="policy__intro">At The Big Bounce Party Rentals, we are committed to getting your party equipment to you as fast as possible. We offer same-day shipping on all orders placed before our daily cutoff time, with delivery to all 50 US states.</p>
+
+        <h2>1. Same-Day Shipping</h2>
+        <p>We ship all orders the same day they are placed, provided the order is received before our daily processing cutoff time:</p>
+        <ul>
+          <li><strong>Cutoff time:</strong> Orders placed before 2:00 PM EST Monday through Friday are shipped the same business day.</li>
+          <li><strong>Weekend orders:</strong> Orders placed after the Friday cutoff or on weekends are shipped the next business day (Monday).</li>
+          <li><strong>Holiday orders:</strong> Orders placed on federal holidays are shipped the next business day.</li>
+        </ul>
+
+        <h2>2. Shipping Coverage</h2>
+        <p>We proudly ship to all 50 United States. We currently do not ship to US territories, PO Boxes, or international addresses.</p>
+
+        <h2>3. Shipping Methods & Estimated Delivery Times</h2>
+        <ul>
+          <li><strong>Standard Shipping:</strong> 5–7 business days</li>
+          <li><strong>Expedited Shipping:</strong> 2–3 business days</li>
+          <li><strong>Express Shipping:</strong> 1–2 business days</li>
+        </ul>
+        <p>Delivery times are estimates and may vary based on your location and carrier conditions. Delivery times begin from the date of shipment, not the date of order.</p>
+
+        <h2>4. Shipping Costs</h2>
+        <p>Shipping costs are calculated at checkout based on the size, weight, and destination of your order. We occasionally offer free shipping promotions — check our website for current offers.</p>
+
+        <h2>5. Order Tracking</h2>
+        <p>Once your order ships, you will receive a confirmation email with a tracking number. You can use this number to track your package through the carrier's website. Please allow up to 24 hours for tracking information to update.</p>
+
+        <h2>6. Large Items & Inflatables</h2>
+        <p>Inflatable bounce houses, water slides, and large party equipment are shipped in compact, deflated packaging. Due to their size and weight, these items may ship via freight or specialized carriers. Delivery for large items may take slightly longer than standard packages.</p>
+
+        <h2>7. Damaged or Lost Shipments</h2>
+        <p>If your order arrives damaged or is lost in transit:</p>
+        <ul>
+          <li>Contact us within 48 hours of delivery (or expected delivery date for lost packages).</li>
+          <li>Provide your order number and photos of any damage.</li>
+          <li>We will work with the carrier to resolve the issue and provide a replacement or refund.</li>
+        </ul>
+
+        <h2>8. Incorrect Shipping Address</h2>
+        <p>Please ensure your shipping address is correct at the time of order. The Big Bounce Party Rentals is not responsible for delays or lost packages due to incorrect address information provided by the customer. Re-shipping charges may apply.</p>
+
+        <h2>9. Contact Us</h2>
+        <p>For shipping questions or concerns, please contact us:</p>
+        <ul>
+          <li>Email: <a href="mailto:info@thebigbouncepartyrentals.com">info@thebigbouncepartyrentals.com</a></li>
+          <li>Phone: <a href="tel:+17868181728">(786) 818-1728</a></li>
+          <li>Website: thebigbouncepartyrentals.com</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header { padding: 6.5rem 0 2rem; background: #fff; border-bottom: 1px solid var(--color-border); }
+  .breadcrumb { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-text-lighter); }
+  .breadcrumb a { color: var(--color-primary); font-weight: 600; }
+  .page-header__title { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.5rem; }
+  .page-header__desc { font-size: 1rem; color: var(--color-text-light); }
+
+  .policy { max-width: 800px; }
+  .policy__intro { font-size: 1rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 2rem; }
+  .policy h2 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--color-text); }
+  .policy p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.75rem; }
+  .policy ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+  .policy li { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.25rem; }
+  .policy a { color: var(--color-primary); font-weight: 600; }
+  .policy a:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .page-header { padding: 5rem 0 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .page-header { padding: 4.5rem 0 1.25rem; }
+    .policy h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+    .policy p, .policy li { font-size: 0.85rem; }
+  }
+</style>

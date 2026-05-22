@@ -1,0 +1,791 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Premium bounce houses, water slides & party rentals — shipped same day USA-wide. Professional setup & sanitization. Shop now at The Big Bounce Party Rentals!" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+    <title>{title} | The Big Bounce Party Rentals</title>
+  </head>
+  <body>
+    <!-- Promo Banner -->
+    <div class="promo-banner">
+      <div class="container promo-banner__inner">
+        <span class="promo-banner__headline">SPRING PARTY SALE!</span>
+        <span class="promo-banner__text">Save 10% on all qualifying rentals</span>
+        <span class="promo-banner__code">SPRING2026</span>
+        <button class="promo-banner__copy" onclick="navigator.clipboard.writeText('SPRING2026');this.textContent='COPIED!'">COPY CODE</button>
+      </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="container topbar__inner">
+        <a href="tel:+17868181728" class="topbar__phone">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (786) 818-1728
+        </a>
+
+        <a href="/" class="topbar__logo">
+          <img src="/logo.png" alt="The Big Bounce Party Rentals" class="topbar__logo-img" />
+        </a>
+
+        <div class="topbar__actions">
+          <a href="mailto:info@thebigbouncepartyrentals.com" class="topbar__action">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Contact
+          </a>
+          <a href="/contact" class="topbar__action topbar__action--cta">Get a Quote</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <header class="header" id="header">
+      <div class="container header__inner">
+        <a href="/products" class="header__shop-btn">Shop Now</a>
+        <nav class="header__nav" id="nav">
+          <a href="/" class="header__link">Home</a>
+          <a href="/products" class="header__link">Products</a>
+          <a href="/products#bounce-houses" class="header__link">Bounce Houses</a>
+          <a href="/products#water-slides" class="header__link">Water Slides</a>
+          <a href="/products#party-accessories" class="header__link">Party Accessories</a>
+          <a href="/products#interactive-games" class="header__link">Games</a>
+          <a href="/about" class="header__link">About Us</a>
+          <a href="/contact" class="header__link">Contact Us</a>
+        </nav>
+        <button class="header__menu-btn" id="menu-btn" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <!-- Newsletter / CTA Strip -->
+      <div class="footer__cta-strip">
+        <div class="container footer__cta-inner">
+          <div class="footer__cta-text">
+            <h3 class="footer__cta-title">Ready to Party?</h3>
+            <p class="footer__cta-desc">Same-day shipping across the USA. Get a free quote in minutes!</p>
+          </div>
+          <div class="footer__cta-actions">
+            <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
+            <a href="tel:+17868181728" class="btn btn--outline footer__cta-btn-outline">Call (786) 818-1728</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Footer -->
+      <div class="footer__main">
+        <div class="container">
+          <div class="footer__grid">
+            <!-- Brand Column -->
+            <div class="footer__brand">
+              <a href="/" class="footer__logo-link">
+                <img src="/logo.png" alt="The Big Bounce Party Rentals" class="footer__logo-img" />
+              </a>
+              <p class="footer__tagline">Premium bounce houses, water slides & party rentals — shipped same day across the USA. Trusted by 500+ families nationwide.</p>
+              <div class="footer__social">
+                <a href="#" class="footer__social-link" aria-label="Facebook">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a href="#" class="footer__social-link" aria-label="Instagram">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                </a>
+                <a href="#" class="footer__social-link" aria-label="TikTok">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78c.28 0 .56.04.82.12v-3.5a6.37 6.37 0 0 0-.82-.05A6.34 6.34 0 0 0 3.15 15.3 6.34 6.34 0 0 0 9.49 21.64a6.34 6.34 0 0 0 6.34-6.34V9.17a8.16 8.16 0 0 0 3.76.92V6.69z"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer__col">
+              <h4 class="footer__heading">Quick Links</h4>
+              <a href="/" class="footer__link">Home</a>
+              <a href="/products" class="footer__link">All Products</a>
+              <a href="/about" class="footer__link">About Us</a>
+              <a href="/contact" class="footer__link">Contact Us</a>
+              <a href="/contact" class="footer__link">Get a Quote</a>
+            </div>
+
+            <!-- Product Categories -->
+            <div class="footer__col">
+              <h4 class="footer__heading">Categories</h4>
+              <a href="/products#bounce-houses" class="footer__link">Bounce Houses</a>
+              <a href="/products#water-slides" class="footer__link">Water Slides</a>
+              <a href="/products#party-accessories" class="footer__link">Party Accessories</a>
+              <a href="/products#interactive-games" class="footer__link">Interactive Games</a>
+              <a href="/products#combo-packages" class="footer__link">Combo Packages</a>
+            </div>
+
+            <!-- Policies -->
+            <div class="footer__col">
+              <h4 class="footer__heading">Policies</h4>
+              <a href="/privacy-policy" class="footer__link">Privacy Policy</a>
+              <a href="/terms-of-service" class="footer__link">Terms of Service</a>
+              <a href="/shipping-policy" class="footer__link">Shipping Policy</a>
+              <a href="/return-policy" class="footer__link">Return & Refund Policy</a>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="footer__col footer__col--contact">
+              <h4 class="footer__heading">Contact Us</h4>
+              <a href="tel:+17868181728" class="footer__contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>(786) 818-1728</span>
+              </a>
+              <a href="mailto:info@thebigbouncepartyrentals.com" class="footer__contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>info@thebigbouncepartyrentals.com</span>
+              </a>
+              <div class="footer__contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Mon–Sun: 7 AM – 7 PM EST</span>
+              </div>
+              <div class="footer__contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Miami, FL 33147 — Ships USA Wide</span>
+              </div>
+              <div class="footer__shipping-badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span>Same-Day Shipping — All 50 States</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="footer__trust">
+            <div class="footer__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Safety Inspected</span>
+            </div>
+            <div class="footer__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Fully Insured</span>
+            </div>
+            <div class="footer__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>5-Star Rated</span>
+            </div>
+            <div class="footer__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <span>Same-Day Shipping</span>
+            </div>
+            <div class="footer__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.77-2.29 3.76S3 11.09 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 14.69c1.47 0 2.66-1.22 2.66-2.7 0-.77-.38-1.51-1.14-2.13S12.56 8.5 12.35 7.63c-.21 1.17-.76 2.26-1.53 3.06-.76.8-1.2 1.76-1.2 2.27 0 1.48 1.19 2.7 2.66 2.7z"/></svg>
+              <span>Hospital-Grade Clean</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer__bottom">
+        <div class="container footer__bottom-inner">
+          <p>&copy; {new Date().getFullYear()} The Big Bounce Party Rentals. All rights reserved.</p>
+          <div class="footer__bottom-links">
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/terms-of-service">Terms</a>
+            <a href="/shipping-policy">Shipping</a>
+            <a href="/return-policy">Returns</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <style>
+      /* === PROMO BANNER === */
+      .promo-banner {
+        background: linear-gradient(135deg, #062a33 0%, #0a4d5c 50%, #062a33 100%);
+      }
+      .promo-banner__inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0.55rem 0;
+        flex-wrap: wrap;
+      }
+      .promo-banner__headline {
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 0.85rem;
+        color: #FFFFFF;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .promo-banner__text {
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.7);
+      }
+      .promo-banner__code {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.85);
+        padding: 0.25rem 0.85rem;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 3px;
+        letter-spacing: 0.08em;
+      }
+      .promo-banner__copy {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.7);
+        padding: 0.25rem 0.75rem;
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 3px;
+        background: transparent;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: all 150ms ease;
+      }
+      .promo-banner__copy:hover {
+        background: rgba(255,255,255,0.1);
+        color: white;
+        border-color: rgba(255,255,255,0.4);
+      }
+
+      @media (max-width: 640px) {
+        .promo-banner__inner { gap: 0.5rem; padding: 0.45rem 0; }
+        .promo-banner__headline { font-size: 0.75rem; }
+        .promo-banner__text { display: none; }
+        .promo-banner__code { font-size: 0.7rem; padding: 0.2rem 0.6rem; }
+        .promo-banner__copy { font-size: 0.65rem; }
+      }
+
+      /* === TOP BAR === */
+      .topbar {
+        background: #FFFFFF;
+        border-bottom: 1px solid #eee;
+      }
+      .topbar__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100px;
+      }
+      .topbar__phone {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 1rem;
+        color: var(--color-text);
+      }
+      .topbar__phone:hover {
+        color: var(--color-primary);
+      }
+      .topbar__logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+      }
+      .topbar__logo-img {
+        height: 120px;
+        width: auto;
+      }
+      .topbar__actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .topbar__action {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-text-light);
+        padding: 0.4rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        transition: all var(--transition-fast);
+      }
+      .topbar__action:hover {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+      .topbar__action--cta {
+        background: var(--color-secondary);
+        color: var(--color-text);
+        border-color: var(--color-secondary-dark);
+        font-weight: 700;
+      }
+      .topbar__action--cta:hover {
+        background: var(--color-secondary-dark);
+        color: var(--color-text);
+      }
+
+      /* === HEADER NAV BAR === */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--color-secondary);
+        border-bottom: 3px solid var(--color-secondary-dark);
+      }
+      .header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+      }
+      .header__nav {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+      .header__link {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--color-text);
+        padding: 0.75rem 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.01em;
+        transition: all var(--transition-fast);
+        position: relative;
+      }
+      .header__link:hover {
+        background: var(--color-secondary-dark);
+      }
+      .header__shop-btn {
+        display: none;
+      }
+      .header__menu-btn {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        padding: 4px;
+      }
+      .header__menu-btn span {
+        display: block;
+        width: 24px;
+        height: 2.5px;
+        background: var(--color-text);
+        border-radius: 2px;
+        transition: all var(--transition-base);
+      }
+
+      @media (max-width: 768px) {
+        .topbar__inner {
+          height: 60px;
+        }
+        .topbar__logo-img {
+          height: 90px;
+          padding-bottom: 10px;
+        }
+        .topbar__action:not(.topbar__action--cta) {
+          display: none;
+        }
+        .header__inner {
+          justify-content: space-between;
+        }
+        .header__shop-btn {
+          display: inline-flex;
+          align-items: center;
+          font-family: var(--font-heading);
+          font-weight: 800;
+          font-size: 0.78rem;
+          color: var(--color-text);
+          background: rgba(0,0,0,0.08);
+          padding: 0.45rem 1rem;
+          border-radius: var(--radius-sm);
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+          transition: all var(--transition-fast);
+          white-space: nowrap;
+        }
+        .header__shop-btn:hover {
+          background: rgba(0,0,0,0.15);
+        }
+        .header__nav {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          bottom: 0;
+          width: 280px;
+          background: white;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: flex-start;
+          padding-top: 3rem;
+          z-index: 200;
+          box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+          transition: right var(--transition-slow);
+        }
+        .header__nav.open {
+          right: 0;
+        }
+        .header__link {
+          font-size: 1rem;
+          padding: 1rem 1.5rem;
+          border-bottom: 1px solid #eee;
+        }
+        .header__link:hover {
+          background: var(--color-surface-alt);
+        }
+        .header__menu-btn {
+          display: flex;
+          border: 2px solid var(--color-text);
+          border-radius: var(--radius-sm);
+          padding: 6px 8px;
+        }
+        .header__menu-btn.active span:nth-child(1) {
+          transform: rotate(45deg) translate(5px, 5px);
+        }
+        .header__menu-btn.active span:nth-child(2) {
+          opacity: 0;
+        }
+        .header__menu-btn.active span:nth-child(3) {
+          transform: rotate(-45deg) translate(5px, -5px);
+        }
+      }
+      @media (max-width: 375px) {
+        .topbar__logo-img {
+          height: 70px;
+        }
+        .topbar__phone {
+          font-size: 0.85rem;
+        }
+        .topbar__action--cta {
+          font-size: 0.75rem;
+          padding: 0.35rem 0.6rem;
+        }
+        .header__shop-btn {
+          font-size: 0.7rem;
+          padding: 0.4rem 0.75rem;
+        }
+      }
+
+      /* === FOOTER === */
+      .footer {
+        color: #ccc;
+      }
+
+      /* CTA Strip */
+      .footer__cta-strip {
+        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+        padding: 2.5rem 0;
+      }
+      .footer__cta-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .footer__cta-title {
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 0.25rem;
+      }
+      .footer__cta-desc {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.8);
+      }
+      .footer__cta-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .footer__cta-btn-outline {
+        border-color: rgba(255,255,255,0.5) !important;
+        color: white !important;
+      }
+      .footer__cta-btn-outline:hover {
+        background: rgba(255,255,255,0.15) !important;
+        border-color: white !important;
+      }
+
+      /* Main Footer */
+      .footer__main {
+        background: linear-gradient(180deg, #0a2a33 0%, #071e24 100%);
+        padding: 3.5rem 0 2rem;
+      }
+      .footer__grid {
+        display: grid;
+        grid-template-columns: 1.8fr 1fr 1fr 1fr 1.5fr;
+        gap: 2rem;
+      }
+      .footer__brand {
+        display: flex;
+        flex-direction: column;
+      }
+      .footer__logo-link {
+        display: inline-flex;
+        margin-bottom: var(--space-md);
+      }
+      .footer__logo-img {
+        height: 95px;
+        width: auto;
+      }
+      .footer__tagline {
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.5);
+      }
+      .footer__social {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: var(--space-lg);
+      }
+      .footer__social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.6);
+        transition: all var(--transition-fast);
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+      .footer__social-link:hover {
+        background: var(--color-secondary);
+        color: var(--color-text);
+        border-color: var(--color-secondary);
+      }
+      .footer__heading {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: var(--color-secondary);
+        margin-bottom: var(--space-lg);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .footer__col {
+        display: flex;
+        flex-direction: column;
+      }
+      .footer__link {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.55);
+        padding: 0.3rem 0;
+        transition: all var(--transition-fast);
+      }
+      .footer__link:hover {
+        color: white;
+        padding-left: 0.25rem;
+      }
+      .footer__contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.6);
+        padding: 0.4rem 0;
+        transition: color var(--transition-fast);
+      }
+      .footer__contact-item svg {
+        flex-shrink: 0;
+        color: var(--color-primary-light);
+        margin-top: 1px;
+      }
+      a.footer__contact-item:hover {
+        color: white;
+      }
+      .footer__shipping-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        padding: 0.6rem 0.85rem;
+        background: rgba(255,215,0,0.08);
+        border: 1px solid rgba(255,215,0,0.2);
+        border-radius: var(--radius-sm);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--color-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .footer__shipping-badge svg {
+        flex-shrink: 0;
+        color: var(--color-secondary);
+      }
+
+      /* Trust Badges */
+      .footer__trust {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      .footer__trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .footer__trust-item svg {
+        color: var(--color-primary-light);
+      }
+
+      /* Bottom Bar */
+      .footer__bottom {
+        background: #050f13;
+        padding: 1rem 0;
+      }
+      .footer__bottom-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        font-size: 0.72rem;
+        color: rgba(255,255,255,0.3);
+      }
+      .footer__bottom-links {
+        display: flex;
+        gap: 1.25rem;
+      }
+      .footer__bottom-links a {
+        color: rgba(255,255,255,0.3);
+        transition: color var(--transition-fast);
+        font-size: 0.72rem;
+      }
+      .footer__bottom-links a:hover {
+        color: rgba(255,255,255,0.7);
+      }
+
+      /* Footer Responsive */
+      @media (max-width: 1024px) {
+        .footer__grid {
+          grid-template-columns: 1.5fr 1fr 1fr 1fr;
+          gap: 1.5rem;
+        }
+        .footer__col--contact {
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem 2rem;
+        }
+        .footer__col--contact .footer__heading {
+          grid-column: 1 / -1;
+        }
+        .footer__col--contact .footer__shipping-badge {
+          grid-column: 1 / -1;
+        }
+      }
+      @media (max-width: 768px) {
+        .footer__cta-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+        .footer__cta-actions {
+          justify-content: center;
+          width: 100%;
+        }
+        .footer__cta-actions .btn {
+          flex: 1;
+          min-width: 0;
+        }
+        .footer__grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem 1.5rem;
+        }
+        .footer__brand {
+          grid-column: span 2;
+        }
+        .footer__col--contact {
+          grid-column: span 2;
+          grid-template-columns: 1fr;
+        }
+        .footer__trust {
+          gap: 1rem;
+        }
+        .footer__trust-item {
+          font-size: 0.65rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .footer__cta-strip {
+          padding: 1.75rem 0;
+        }
+        .footer__cta-title {
+          font-size: 1.25rem;
+        }
+        .footer__cta-actions {
+          flex-direction: column;
+        }
+        .footer__cta-actions .btn {
+          width: 100%;
+        }
+        .footer__grid {
+          grid-template-columns: 1fr;
+          gap: 1.75rem;
+        }
+        .footer__brand {
+          grid-column: span 1;
+        }
+        .footer__col--contact {
+          grid-column: span 1;
+        }
+        .footer__bottom-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+        .footer__trust-item span {
+          font-size: 0.6rem;
+        }
+      }
+    </style>
+
+    <script>
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menu-btn');
+      const nav = document.getElementById('nav');
+      menuBtn?.addEventListener('click', () => {
+        menuBtn.classList.toggle('active');
+        nav?.classList.toggle('open');
+      });
+
+      // Close menu on link click
+      nav?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuBtn?.classList.remove('active');
+          nav?.classList.remove('open');
+        });
+      });
+    </script>
+  </body>
+</html>

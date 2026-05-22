@@ -1,0 +1,963 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { getProducts, getCategories } from '../lib/supabase';
+import '../styles/global.css';
+
+const allProducts = await getProducts();
+const categories = await getCategories();
+const featuredProducts = allProducts.filter(p => p.badge).slice(0, 4);
+const allProductsSlice = allProducts.slice(0, 8);
+---
+
+<Layout title="Home">
+  <HeroSection />
+
+  <!-- Shop by Category -->
+  <section class="section categories">
+    <div class="container">
+      <h2 class="section-title">Shop by Category</h2>
+      <p class="section-subtitle">Find the perfect rental for your next celebration</p>
+
+      <div class="categories__grid">
+        <a href="/products#bounce-houses" class="cat-card cat-card--large">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="Bounce Houses" class="cat-card__img" loading="lazy" />
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__content">
+            <span class="cat-card__tag">Most Popular</span>
+            <h3 class="cat-card__title">Bounce Houses</h3>
+            <p class="cat-card__desc">Castles, combos & themed inflatables</p>
+            <span class="cat-card__link">Shop Now &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/products#water-slides" class="cat-card">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_3_highfivepartyrentals.jpg" alt="Water Slides" class="cat-card__img" loading="lazy" />
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__content">
+            <h3 class="cat-card__title">Water Slides</h3>
+            <span class="cat-card__link">Shop Now &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/products#party-accessories" class="cat-card">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_4_highfivepartyrentals.jpg" alt="Party Accessories" class="cat-card__img" loading="lazy" />
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__content">
+            <h3 class="cat-card__title">Party Extras</h3>
+            <span class="cat-card__link">Shop Now &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/products#interactive-games" class="cat-card">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_party.png" alt="Interactive Games" class="cat-card__img" loading="lazy" />
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__content">
+            <h3 class="cat-card__title">Games</h3>
+            <span class="cat-card__link">Shop Now &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/products" class="cat-card cat-card--cta">
+          <div class="cat-card__content cat-card__content--center">
+            <h3 class="cat-card__title">View All<br/>Products</h3>
+            <span class="cat-card__link">Browse Catalog &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section section--alt featured">
+    <div class="container">
+      <h2 class="section-title">Most Popular Rentals</h2>
+      <p class="section-subtitle">Our top-rated party essentials that families keep coming back for</p>
+
+      <div class="featured__grid">
+        {featuredProducts.map(product => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+
+      <div class="featured__cta">
+        <a href="/products" class="btn btn--primary btn--lg">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Banners — 2 column like ecommerce -->
+  <section class="section promo-banners">
+    <div class="container">
+      <div class="promo-banners__grid">
+        <a href="/products#bounce-houses" class="promo-card promo-card--pink">
+          <div class="promo-card__text">
+            <h3 class="promo-card__title">Bounce Houses</h3>
+            <p class="promo-card__desc">The ultimate backyard party experience — safe, colorful, and endlessly fun!</p>
+            <span class="promo-card__link">Shop Now</span>
+          </div>
+          <div class="promo-card__badge-circle">From <strong>$149</strong></div>
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="Bounce house party" class="promo-card__img" loading="lazy" />
+        </a>
+        <a href="/products#water-slides" class="promo-card promo-card--mint">
+          <div class="promo-card__text">
+            <h3 class="promo-card__title">Water Slides</h3>
+            <p class="promo-card__desc">Beat the heat with our giant inflatable water slides for all ages!</p>
+            <span class="promo-card__link">Shop Now</span>
+          </div>
+          <div class="promo-card__badge-circle promo-card__badge-circle--teal">From <strong>$199</strong></div>
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_3_highfivepartyrentals.jpg" alt="Water slide fun" class="promo-card__img" loading="lazy" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Products Grid -->
+  <section class="section shop-all">
+    <div class="container">
+      <h2 class="section-title">Shop All Rentals</h2>
+      <p class="section-subtitle">Everything you need for the perfect party — browse our full collection</p>
+
+      <div class="shop-all__grid">
+        {allProductsSlice.map(product => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+
+      <div class="featured__cta">
+        <a href="/products" class="btn btn--outline btn--lg">Browse Full Catalog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">From browsing to bouncing — here's how easy it is</p>
+
+      <div class="steps__grid">
+        <div class="step step--teal">
+          <div class="step__number">1</div>
+          <div class="step__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <h3 class="step__title">Browse & Choose</h3>
+          <p class="step__desc">Explore our selection of bounce houses, water slides, and party accessories online.</p>
+        </div>
+
+        <div class="step step--yellow">
+          <div class="step__number">2</div>
+          <div class="step__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>
+          </div>
+          <h3 class="step__title">Book Your Date</h3>
+          <p class="step__desc">Contact us to reserve your items. We'll confirm availability and handle all the details.</p>
+        </div>
+
+        <div class="step step--red">
+          <div class="step__number">3</div>
+          <div class="step__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="15" rx="2"/><path d="M1 10h22"/><circle cx="12" cy="15" r="2"/></svg>
+          </div>
+          <h3 class="step__title">We Deliver & Set Up</h3>
+          <p class="step__desc">Our team arrives on time with sanitized equipment, handles full setup at your venue.</p>
+        </div>
+
+        <div class="step step--teal">
+          <div class="step__number">4</div>
+          <div class="step__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <h3 class="step__title">Party & Enjoy</h3>
+          <p class="step__desc">Have an amazing time! When the party's over, we pick everything up — stress-free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery — Party Moments -->
+  <section class="section gallery">
+    <div class="container">
+      <h2 class="section-title">Party Moments</h2>
+      <p class="section-subtitle">See our inflatables in action at real events across the USA</p>
+
+      <div class="gallery__grid">
+        <div class="gallery__item gallery__item--large">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="Kids playing on bounce house at outdoor party" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_3_highfivepartyrentals.jpg" alt="Colorful water slide at summer birthday party" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_4_highfivepartyrentals.jpg" alt="Party setup with bounce house and decorations" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_party.png" alt="Family enjoying inflatable party rental" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="Kids having fun at a party event" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us — Marquee -->
+  <section class="section section--alt why-us">
+    <div class="container">
+      <h2 class="section-title">Why Families Choose Us</h2>
+      <p class="section-subtitle">We go above and beyond to deliver safe, clean, and amazing party experiences</p>
+    </div>
+
+    <div class="marquee">
+      <div class="marquee__track">
+        <!-- First set -->
+        <div class="marquee__card marquee__card--yellow">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="Safety inspected equipment" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Safety Inspected</h3>
+            <p class="marquee__card-desc">Every piece of equipment undergoes rigorous safety inspections meeting commercial-grade standards.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--teal">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_3_highfivepartyrentals.jpg" alt="Hospital grade clean" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Hospital-Grade Clean</h3>
+            <p class="marquee__card-desc">Equipment sanitized with hospital-grade disinfectants before and after every single rental.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--red">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_4_highfivepartyrentals.jpg" alt="Fully insured" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Fully Insured</h3>
+            <p class="marquee__card-desc">Comprehensive liability insurance coverage for your complete peace of mind at every event.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--yellow">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_party.png" alt="On-time delivery" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">On-Time Delivery</h3>
+            <p class="marquee__card-desc">Professional delivery and setup included. We arrive on time, every time — guaranteed.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--teal">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="Family owned" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Family Owned</h3>
+            <p class="marquee__card-desc">We're a local family business that truly cares about making your celebrations special.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--red">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="5 star rated" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">5-Star Rated</h3>
+            <p class="marquee__card-desc">Over 500 happy families and 1000+ successful events with a perfect 5-star average.</p>
+          </div>
+        </div>
+        <!-- Duplicate set for seamless loop -->
+        <div class="marquee__card marquee__card--yellow">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="Safety inspected equipment" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Safety Inspected</h3>
+            <p class="marquee__card-desc">Every piece of equipment undergoes rigorous safety inspections meeting commercial-grade standards.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--teal">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_3_highfivepartyrentals.jpg" alt="Hospital grade clean" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Hospital-Grade Clean</h3>
+            <p class="marquee__card-desc">Equipment sanitized with hospital-grade disinfectants before and after every single rental.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--red">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_4_highfivepartyrentals.jpg" alt="Fully insured" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Fully Insured</h3>
+            <p class="marquee__card-desc">Comprehensive liability insurance coverage for your complete peace of mind at every event.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--yellow">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_party.png" alt="On-time delivery" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">On-Time Delivery</h3>
+            <p class="marquee__card-desc">Professional delivery and setup included. We arrive on time, every time — guaranteed.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--teal">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="Family owned" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">Family Owned</h3>
+            <p class="marquee__card-desc">We're a local family business that truly cares about making your celebrations special.</p>
+          </div>
+        </div>
+        <div class="marquee__card marquee__card--red">
+          <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_2_highfivepartyrentals.jpg" alt="5 star rated" class="marquee__card-img" loading="lazy" />
+          <div class="marquee__card-body">
+            <h3 class="marquee__card-title">5-Star Rated</h3>
+            <p class="marquee__card-desc">Over 500 happy families and 1000+ successful events with a perfect 5-star average.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section — 2 columns -->
+  <section class="cta-section">
+    <div class="container cta-section__inner">
+      <div class="cta-section__left">
+        <h2 class="cta-section__title">Ready to Make Your Party Unforgettable?</h2>
+        <p class="cta-section__desc">Get a free quote in minutes — we respond within 2 hours! Professional delivery, setup & pickup included.</p>
+        <div class="cta-section__actions">
+          <a href="tel:+17868181728" class="btn btn--primary btn--lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call (786) 818-1728
+          </a>
+          <a href="/contact" class="btn btn--secondary btn--lg">Get a Free Quote</a>
+        </div>
+      </div>
+      <div class="cta-section__right">
+        <img src="https://files.sysers.com/cp/upload/highfivepartyrentals/gallery/img_banner_1_highfivepartyrentals.jpg" alt="Kids enjoying party rentals" class="cta-section__img" loading="lazy" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* === CATEGORIES === */
+  .categories {
+    padding: var(--space-3xl) 0;
+  }
+
+  .categories__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: var(--space-md);
+  }
+
+  .cat-card {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    transition: transform var(--transition-base);
+  }
+  .cat-card:hover {
+    transform: translateY(-3px);
+  }
+  .cat-card:hover .cat-card__img {
+    transform: scale(1.05);
+  }
+
+  .cat-card--large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .cat-card__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .cat-card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+  }
+
+  .cat-card__content {
+    position: relative;
+    z-index: 2;
+    padding: 1.25rem;
+    width: 100%;
+  }
+
+  .cat-card__content--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+  }
+
+  .cat-card__tag {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .cat-card__title {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
+  }
+
+  .cat-card--large .cat-card__title {
+    font-size: 1.75rem;
+  }
+
+  .cat-card__desc {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0.5rem;
+  }
+
+  .cat-card__link {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--color-secondary);
+    transition: color var(--transition-fast);
+  }
+  .cat-card:hover .cat-card__link {
+    color: white;
+  }
+
+  .cat-card--cta {
+    background: var(--color-primary);
+    align-items: center;
+    justify-content: center;
+  }
+  .cat-card--cta .cat-card__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .cat-card--cta .cat-card__link {
+    color: rgba(255,255,255,0.8);
+  }
+  .cat-card--cta:hover {
+    background: var(--color-primary-dark);
+  }
+  .cat-card--cta:hover .cat-card__link {
+    color: white;
+  }
+
+  /* === FEATURED === */
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .featured__cta {
+    text-align: center;
+    margin-top: var(--space-3xl);
+  }
+
+  /* === PROMO BANNERS === */
+  .promo-banners {
+    padding: var(--space-xl) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .promo-banners__grid {
+    display: flex;
+    gap: var(--space-lg);
+    justify-content: center;
+    align-items: center;
+  }
+  .promo-card {
+    position: relative;
+    display: block;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    min-height: 240px;
+    padding: 2.5rem;
+    flex: 1;
+    transition: transform var(--transition-base);
+  }
+  .promo-card:hover {
+    transform: translateY(-3px);
+  }
+  .promo-card--pink {
+    background: linear-gradient(135deg, #FFE8EC 0%, #FFF0F3 100%);
+  }
+  .promo-card--mint {
+    background: linear-gradient(135deg, #E0F5EE 0%, #EEFAF5 100%);
+  }
+  .promo-card__text {
+    position: relative;
+    z-index: 2;
+    max-width: 55%;
+  }
+  .promo-card__title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+  .promo-card__desc {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .promo-card__link {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--color-text);
+    color: white;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+  }
+  .promo-card:hover .promo-card__link {
+    background: var(--color-primary);
+  }
+  .promo-card__badge-circle {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 3;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-full);
+    background: var(--color-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+  .promo-card__badge-circle strong {
+    font-size: 1rem;
+  }
+  .promo-card__badge-circle--teal {
+    background: var(--color-primary);
+    color: white;
+  }
+  .promo-card__img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    pointer-events: none;
+  }
+
+  /* === SHOP ALL === */
+  .shop-all {
+    padding-top: var(--space-3xl);
+  }
+  .shop-all__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+  }
+
+  /* === HOW IT WORKS === */
+  .how-it-works {
+    background: var(--color-primary);
+    padding: var(--space-4xl) 0;
+  }
+  .how-it-works .section-title {
+    color: white;
+  }
+  .how-it-works .section-subtitle {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .steps__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .step {
+    position: relative;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-xl);
+    transition: transform var(--transition-base);
+  }
+  .step:hover {
+    transform: translateY(-4px);
+  }
+
+  .step--teal {
+    background: rgba(255,255,255,0.1);
+  }
+  .step--yellow {
+    background: rgba(255,215,0,0.15);
+  }
+  .step--red {
+    background: rgba(236,28,35,0.12);
+  }
+
+  .step__number {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 0.75rem;
+  }
+
+  .step__icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem auto 1rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+
+  .step__title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+
+  .step__desc {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+
+  /* === GALLERY === */
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-rows: 220px 220px;
+    gap: var(--space-sm);
+  }
+
+  .gallery__item {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .gallery__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .gallery__item:hover img {
+    transform: scale(1.03);
+  }
+
+  .gallery__item--large {
+    grid-row: span 2;
+  }
+
+  /* === WHY US — MARQUEE === */
+  .why-us {
+    overflow: hidden;
+    padding-bottom: var(--space-4xl);
+  }
+
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    margin-top: var(--space-xl);
+  }
+
+  .marquee__track {
+    display: flex;
+    gap: var(--space-lg);
+    animation: marquee-scroll 40s linear infinite;
+    width: max-content;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee__card {
+    flex-shrink: 0;
+    width: 300px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: transform var(--transition-base);
+  }
+  .marquee__card:hover {
+    transform: scale(1.02);
+  }
+
+  .marquee__card--yellow {
+    background: #FFF8E1;
+  }
+  .marquee__card--teal {
+    background: #E0F7FA;
+  }
+  .marquee__card--red {
+    background: #FFEBEE;
+  }
+
+  .marquee__card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .marquee__card-body {
+    padding: 1.25rem;
+  }
+
+  .marquee__card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    color: var(--color-text);
+  }
+
+  .marquee__card-desc {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+  }
+
+  /* === CTA SECTION — 2 COLUMNS === */
+  .cta-section {
+    background: var(--color-primary);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cta-section__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    min-height: 360px;
+  }
+
+  .cta-section__left {
+    padding: var(--space-4xl) 0;
+    padding-right: var(--space-3xl);
+  }
+
+  .cta-section__title {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    color: white;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .cta-section__desc {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+    max-width: 500px;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .cta-section__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-section__right {
+    height: 100%;
+    min-height: 360px;
+  }
+
+  .cta-section__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 1024px) {
+    .featured__grid,
+    .shop-all__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .categories__grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 180px 150px 150px;
+    }
+    .cat-card--large {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+    .featured__grid,
+    .shop-all__grid {
+      grid-template-columns: 1fr;
+    }
+    .promo-banners__grid {
+      flex-direction: column;
+    }
+    .promo-card {
+      min-height: 180px;
+    }
+    .promo-card__badge-circle {
+      right: 100px;
+      width: 54px;
+      height: 54px;
+    }
+    .steps__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .gallery__grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+    }
+    .gallery__item--large {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+    .marquee__card {
+      width: 260px;
+    }
+    .cta-section__inner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .cta-section__left {
+      padding: var(--space-3xl) 0;
+      padding-right: 0;
+      text-align: center;
+    }
+    .cta-section__actions {
+      justify-content: center;
+    }
+    .cta-section__right {
+      min-height: 250px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .categories__grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .cat-card--large {
+      grid-column: span 1;
+      min-height: 200px;
+    }
+    .cat-card {
+      min-height: 140px;
+    }
+    .cat-card--large .cat-card__title {
+      font-size: 1.3rem;
+    }
+    .promo-card {
+      min-height: 150px;
+      padding: 1.5rem;
+    }
+    .promo-card__title {
+      font-size: 1.15rem;
+    }
+    .promo-card__desc {
+      font-size: 0.78rem;
+    }
+    .promo-card__badge-circle {
+      right: 10px;
+      top: 10px;
+      font-size: 0.65rem;
+      padding: 0.3rem 0.65rem;
+      width: auto;
+      height: auto;
+    }
+    .promo-card__badge-circle strong {
+      font-size: 0.85rem;
+    }
+    .promo-card__img {
+      width: 40%;
+      opacity: 0.4;
+    }
+    .steps__grid {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .step {
+      padding: 1.5rem 1rem;
+    }
+    .gallery__grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: 180px 140px 140px;
+    }
+    .gallery__item--large {
+      grid-column: span 1;
+    }
+    .marquee__card {
+      width: 220px;
+    }
+    .marquee__card-img {
+      height: 140px;
+    }
+    .cta-section__left {
+      padding: var(--space-xl) 0;
+    }
+    .cta-section__right {
+      min-height: 200px;
+    }
+    .cta-section__actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .cta-section__actions .btn {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .featured__grid,
+    .shop-all__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

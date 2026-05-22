@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="Return & Refund Policy" description="Return and Refund Policy for The Big Bounce Party Rentals. Learn about our return process, refund timeline, and exchange options.">
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><span>Return & Refund Policy</span></nav>
+      <h1 class="page-header__title">Return & Refund Policy</h1>
+      <p class="page-header__desc">Last updated: March 23, 2026</p>
+    </div>
+  </section>
+
+  <section class="section policy-content">
+    <div class="container">
+      <div class="policy">
+        <p class="policy__intro">At The Big Bounce Party Rentals, your satisfaction is our priority. If you are not completely happy with your purchase, we are here to help. Please review our return and refund policy below.</p>
+
+        <h2>1. Return Eligibility</h2>
+        <p>You may return purchased products within 30 days of delivery, provided they meet the following conditions:</p>
+        <ul>
+          <li>The item is unused, in its original packaging, and in the same condition you received it.</li>
+          <li>All accessories, manuals, and included items are returned with the product.</li>
+          <li>The item has not been inflated or used (for inflatables and equipment).</li>
+          <li>You have your order confirmation or proof of purchase.</li>
+        </ul>
+
+        <h2>2. Non-Returnable Items</h2>
+        <p>The following items cannot be returned:</p>
+        <ul>
+          <li>Items that have been used, inflated, or assembled</li>
+          <li>Consumable items (foam solution, popcorn supplies, etc.)</li>
+          <li>Items damaged due to misuse or negligence</li>
+          <li>Items marked as final sale or clearance</li>
+        </ul>
+
+        <h2>3. Return Process</h2>
+        <p>To initiate a return:</p>
+        <ol>
+          <li>Contact us at <a href="mailto:info@thebigbouncepartyrentals.com">info@thebigbouncepartyrentals.com</a> or call <a href="tel:+17868181728">(786) 818-1728</a> with your order number.</li>
+          <li>Our team will provide you with a Return Merchandise Authorization (RMA) number and return shipping instructions.</li>
+          <li>Pack the item securely in its original packaging and include the RMA number.</li>
+          <li>Ship the item back to the address provided.</li>
+        </ol>
+        <p><strong>Important:</strong> Do not ship returns without an RMA number. Unauthorized returns may be refused.</p>
+
+        <h2>4. Return Shipping</h2>
+        <ul>
+          <li>Return shipping costs are the responsibility of the customer, unless the return is due to a defect or error on our part.</li>
+          <li>We recommend using a trackable shipping method and purchasing shipping insurance for high-value items.</li>
+          <li>If the return is due to our error (wrong item, defective product), we will provide a prepaid return label.</li>
+        </ul>
+
+        <h2>5. Refunds</h2>
+        <p>Once we receive and inspect your returned item:</p>
+        <ul>
+          <li>You will be notified via email about the approval or rejection of your refund.</li>
+          <li>Approved refunds are processed within 5–7 business days to your original payment method.</li>
+          <li>Please allow additional time for your bank or credit card company to post the refund to your account.</li>
+        </ul>
+
+        <h2>6. Exchanges</h2>
+        <p>If you received a defective or damaged item and would like an exchange, contact us within 48 hours of delivery. We will ship a replacement at no additional cost once the defective item is returned or verified.</p>
+
+        <h2>7. Damaged or Defective Items</h2>
+        <p>If your order arrives damaged or defective:</p>
+        <ul>
+          <li>Contact us within 48 hours of delivery.</li>
+          <li>Provide photos of the damage and your order number.</li>
+          <li>We will arrange for a replacement or full refund, including return shipping costs.</li>
+        </ul>
+
+        <h2>8. Rental Returns</h2>
+        <p>For rented equipment:</p>
+        <ul>
+          <li>Equipment must be returned by the agreed-upon date.</li>
+          <li>Late returns may incur additional daily charges at the standard rental rate.</li>
+          <li>Equipment should be returned in the same condition it was received, allowing for normal wear and tear.</li>
+          <li>Excessive damage or missing items will be charged to the renter.</li>
+        </ul>
+
+        <h2>9. Cancellations</h2>
+        <ul>
+          <li><strong>Before shipping:</strong> Orders can be cancelled for a full refund if they have not yet shipped.</li>
+          <li><strong>After shipping:</strong> Once shipped, the order must go through the standard return process.</li>
+          <li><strong>Rental cancellations:</strong> Cancel at least 48 hours before the scheduled rental date for a full refund. Cancellations within 48 hours may be subject to a cancellation fee.</li>
+        </ul>
+
+        <h2>10. Contact Us</h2>
+        <p>For return or refund questions, please contact us:</p>
+        <ul>
+          <li>Email: <a href="mailto:info@thebigbouncepartyrentals.com">info@thebigbouncepartyrentals.com</a></li>
+          <li>Phone: <a href="tel:+17868181728">(786) 818-1728</a></li>
+          <li>Website: thebigbouncepartyrentals.com</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header { padding: 6.5rem 0 2rem; background: #fff; border-bottom: 1px solid var(--color-border); }
+  .breadcrumb { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-text-lighter); }
+  .breadcrumb a { color: var(--color-primary); font-weight: 600; }
+  .page-header__title { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.5rem; }
+  .page-header__desc { font-size: 1rem; color: var(--color-text-light); }
+
+  .policy { max-width: 800px; }
+  .policy__intro { font-size: 1rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 2rem; }
+  .policy h2 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--color-text); }
+  .policy p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.75rem; }
+  .policy ul, .policy ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  .policy ul { list-style: disc; }
+  .policy ol { list-style: decimal; }
+  .policy li { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 0.25rem; }
+  .policy a { color: var(--color-primary); font-weight: 600; }
+  .policy a:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .page-header { padding: 5rem 0 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .page-header { padding: 4.5rem 0 1.25rem; }
+    .policy h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+    .policy p, .policy li { font-size: 0.85rem; }
+  }
+</style>

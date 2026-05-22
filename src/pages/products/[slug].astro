@@ -1,0 +1,764 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getProducts, getProductBySlug, getPrimaryImage, getCategoryLabel, getCategorySlug } from '../../lib/supabase';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const allProducts = await getProducts();
+const categoryLabel = getCategoryLabel(product);
+const categorySlug = getCategorySlug(product);
+const primaryImage = getPrimaryImage(product);
+
+const related = allProducts
+  .filter(p => p.category?.slug === categorySlug && p.id !== product.id)
+  .slice(0, 3);
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "description": product.description,
+  "sku": product.sku,
+  "image": primaryImage?.url,
+  "brand": { "@type": "Brand", "name": "The Big Bounce Party Rentals" },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Daily Rental",
+      "price": product.daily_price,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "priceValidUntil": "2027-12-31"
+    },
+    {
+      "@type": "Offer",
+      "name": "Buy New",
+      "price": product.buy_price,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "priceValidUntil": "2027-12-31"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "47",
+    "bestRating": "5"
+  }
+};
+---
+
+<Layout title={product.name} description={product.short_description}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+  <!-- Breadcrumb -->
+  <section class="pdp-header">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/products">Products</a>
+        <span>/</span>
+        <a href={`/products#${categorySlug}`}>{categoryLabel}</a>
+        <span>/</span>
+        <span>{product.name}</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Product Detail -->
+  <section class="pdp">
+    <div class="container pdp__inner">
+      <!-- Image Gallery -->
+      <div class="pdp__gallery">
+        {product.images && product.images.length > 0 ? (
+          <>
+            <div class="pdp__gallery-main">
+              {product.badge && <span class="badge pdp__badge">{product.badge}</span>}
+              <img
+                class="pdp__main-image"
+                id="mainImage"
+                src={primaryImage?.url}
+                alt={primaryImage?.alt || product.name}
+                width="600"
+                height="450"
+              />
+            </div>
+            {product.images.length > 1 && (
+              <div class="pdp__thumbnails">
+                {product.images.map((img: any, i: number) => (
+                  <button
+                    class={`pdp__thumb ${i === 0 ? 'pdp__thumb--active' : ''}`}
+                    data-src={img.url}
+                    data-alt={img.alt}
+                  >
+                    <img src={img.url} alt={img.alt || `${product.name} view ${i + 1}`} loading="lazy" width="80" height="60" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <div class="pdp__image-main" data-category={categorySlug}>
+            {product.badge && <span class="badge pdp__badge">{product.badge}</span>}
+            <span class="pdp__image-label">{categoryLabel}</span>
+          </div>
+        )}
+      </div>
+
+      <!-- Info Column -->
+      <div class="pdp__info">
+        <div class="pdp__category-tag">
+          <span class="badge badge--primary">{categoryLabel}</span>
+          {product.badge && <span class="badge">{product.badge}</span>}
+        </div>
+
+        <h1 class="pdp__title">{product.name}</h1>
+
+        <div class="pdp__rating">
+          <span class="pdp__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="pdp__rating-text">5.0 (47 reviews)</span>
+          <span class="pdp__sku">SKU: {product.sku}</span>
+        </div>
+
+        <p class="pdp__description">{product.short_description}</p>
+
+        <!-- Availability Banner -->
+        <div class="pdp__availability">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Available for <strong>rent</strong> & <strong>purchase</strong> — Ships nationwide with same-day dispatch</span>
+        </div>
+
+        <!-- Pricing Cards — Buy New and Rental -->
+        <div class="pdp__pricing">
+          <div class="pdp__price-card pdp__price-card--rental">
+            <div class="pdp__price-card-header">Daily Rental</div>
+            <div class="pdp__price-card-amount">
+              <span class="pdp__price-value">${product.daily_price}</span>
+              <span class="pdp__price-period">/day</span>
+            </div>
+            <ul class="pdp__price-perks">
+              <li>Free delivery & setup</li>
+              <li>Professional sanitization</li>
+              <li>Same-day pickup included</li>
+            </ul>
+            <a href="/contact" class="btn btn--primary btn--full">Book Daily Rental</a>
+          </div>
+
+          <div class="pdp__price-card pdp__price-card--buy">
+            <div class="pdp__price-card-header">Buy New</div>
+            <div class="pdp__price-card-amount">
+              <span class="pdp__price-value">${product.buy_price}</span>
+            </div>
+            <ul class="pdp__price-perks">
+              <li>Brand new, factory sealed</li>
+              <li>Full warranty included</li>
+              <li>Keep it forever</li>
+            </ul>
+            <a href="/contact" class="btn btn--secondary btn--full">Buy Now — ${product.buy_price}</a>
+          </div>
+        </div>
+
+        <!-- Quick Contact -->
+        <div class="pdp__quick-contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Questions? Call <a href="tel:+17868181728"><strong>(786) 818-1728</strong></a> — We respond within 2 hours!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs & Features -->
+  <section class="section section--alt pdp-details">
+    <div class="container">
+      <div class="pdp-details__grid">
+        <div class="pdp-details__section">
+          <h2 class="pdp-details__heading">Specifications</h2>
+          <div class="specs-table">
+            <div class="specs-table__row"><span class="specs-table__label">Dimensions</span><span class="specs-table__value">{product.dimensions}</span></div>
+            <div class="specs-table__row"><span class="specs-table__label">Length</span><span class="specs-table__value">{product.length}</span></div>
+            <div class="specs-table__row"><span class="specs-table__label">Width</span><span class="specs-table__value">{product.width}</span></div>
+            <div class="specs-table__row"><span class="specs-table__label">Height</span><span class="specs-table__value">{product.height}</span></div>
+            {product.weight && <div class="specs-table__row"><span class="specs-table__label">Weight</span><span class="specs-table__value">{product.weight}</span></div>}
+            <div class="specs-table__row"><span class="specs-table__label">Age Range</span><span class="specs-table__value">{product.age_range}</span></div>
+            <div class="specs-table__row"><span class="specs-table__label">Capacity</span><span class="specs-table__value">{product.capacity}</span></div>
+            <div class="specs-table__row"><span class="specs-table__label">SKU</span><span class="specs-table__value">{product.sku}</span></div>
+          </div>
+        </div>
+
+        <div class="pdp-details__section">
+          <h2 class="pdp-details__heading">Features</h2>
+          <ul class="features-list">
+            {product.features.map((feature: string) => (
+              <li class="features-list__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pdp-details__section">
+          <h2 class="pdp-details__heading">What's Included</h2>
+          <ul class="included-list">
+            {product.included_items.map((item: string) => (
+              <li class="included-list__item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Description -->
+  <section class="section pdp-description">
+    <div class="container">
+      <h2 class="section-title">About This Product</h2>
+      <div class="pdp-description__content">
+        <p>{product.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews -->
+  <section class="section section--alt pdp-reviews">
+    <div class="container">
+      <h2 class="section-title">Customer Reviews</h2>
+      <div class="reviews__layout">
+        <!-- Rating Summary -->
+        <div class="reviews__summary">
+          <div class="reviews__summary-card">
+            <div class="reviews__avg">4.9</div>
+            <div class="reviews__avg-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <div class="reviews__count">Based on 47 reviews</div>
+            <div class="reviews__bars">
+              <div class="reviews__bar-row"><span class="reviews__bar-label">5 star</span><div class="reviews__bar-track"><div class="reviews__bar-fill" style="width:89%"></div></div><span class="reviews__bar-pct">89%</span></div>
+              <div class="reviews__bar-row"><span class="reviews__bar-label">4 star</span><div class="reviews__bar-track"><div class="reviews__bar-fill" style="width:9%"></div></div><span class="reviews__bar-pct">9%</span></div>
+              <div class="reviews__bar-row"><span class="reviews__bar-label">3 star</span><div class="reviews__bar-track"><div class="reviews__bar-fill" style="width:2%"></div></div><span class="reviews__bar-pct">2%</span></div>
+              <div class="reviews__bar-row"><span class="reviews__bar-label">2 star</span><div class="reviews__bar-track"><div class="reviews__bar-fill" style="width:0%"></div></div><span class="reviews__bar-pct">0%</span></div>
+              <div class="reviews__bar-row"><span class="reviews__bar-label">1 star</span><div class="reviews__bar-track"><div class="reviews__bar-fill" style="width:0%"></div></div><span class="reviews__bar-pct">0%</span></div>
+            </div>
+          </div>
+
+          <!-- Leave Review Form -->
+          <div class="reviews__form-card">
+            <h3 class="reviews__form-title">Leave Your Review</h3>
+            <form class="reviews__form" onsubmit="event.preventDefault()">
+              <div class="reviews__form-row">
+                <div class="reviews__form-field">
+                  <label class="reviews__form-label">Name</label>
+                  <input type="text" class="reviews__form-input" placeholder="Your name" />
+                </div>
+                <div class="reviews__form-field">
+                  <label class="reviews__form-label">Email</label>
+                  <input type="email" class="reviews__form-input" placeholder="Your email" />
+                </div>
+              </div>
+              <div class="reviews__form-field">
+                <label class="reviews__form-label">Rating</label>
+                <div class="reviews__form-stars">
+                  <span class="reviews__form-star" data-rating="1">&#9734;</span>
+                  <span class="reviews__form-star" data-rating="2">&#9734;</span>
+                  <span class="reviews__form-star" data-rating="3">&#9734;</span>
+                  <span class="reviews__form-star" data-rating="4">&#9734;</span>
+                  <span class="reviews__form-star" data-rating="5">&#9734;</span>
+                </div>
+              </div>
+              <div class="reviews__form-field">
+                <label class="reviews__form-label">Your Review</label>
+                <textarea class="reviews__form-input reviews__form-textarea" placeholder="Share your experience..." rows="4"></textarea>
+              </div>
+              <button type="submit" class="btn btn--primary">Submit Review</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Review Cards -->
+        <div class="reviews__list">
+          <div class="reviews__card">
+            <div class="reviews__card-header">
+              <span class="reviews__card-name">S****a</span>
+              <span class="reviews__card-date">Mar 8, 2026</span>
+            </div>
+            <div class="reviews__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="reviews__card-text">We rented this for my son's birthday party and the kids had an absolute blast! Setup was super quick and the quality is fantastic. Will definitely be ordering again for our next event.</p>
+            <div class="reviews__card-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+          <div class="reviews__card">
+            <div class="reviews__card-header">
+              <span class="reviews__card-name">M****l</span>
+              <span class="reviews__card-date">Feb 22, 2026</span>
+            </div>
+            <div class="reviews__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="reviews__card-text">Purchased this for our rental business and the quality exceeded expectations. Customers love it and it holds up great event after event. Shipping was fast too!</p>
+            <div class="reviews__card-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+          <div class="reviews__card">
+            <div class="reviews__card-header">
+              <span class="reviews__card-name">J****n</span>
+              <span class="reviews__card-date">Feb 10, 2026</span>
+            </div>
+            <div class="reviews__card-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+            <p class="reviews__card-text">Great product, very durable and well-made. The kids at our church event loved it. Only wish the instructions were a little more detailed, but setup was still pretty straightforward.</p>
+            <div class="reviews__card-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+          <div class="reviews__card">
+            <div class="reviews__card-header">
+              <span class="reviews__card-name">A****e</span>
+              <span class="reviews__card-date">Jan 28, 2026</span>
+            </div>
+            <div class="reviews__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="reviews__card-text">This was a huge hit at our neighborhood block party! Easy to inflate, very sturdy, and the colors are vibrant. Delivery was right on time. Highly recommend The Big Bounce Party Rentals!</p>
+            <div class="reviews__card-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety Banner -->
+  <section class="safety-banner">
+    <div class="container safety-banner__inner">
+      <div class="safety-banner__item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>Safety Inspected</span>
+      </div>
+      <div class="safety-banner__item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>Fully Insured</span>
+      </div>
+      <div class="safety-banner__item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3"/></svg>
+        <span>Hospital-Grade Clean</span>
+      </div>
+      <div class="safety-banner__item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>On-Time Delivery</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Products -->
+  {related.length > 0 && (
+    <section class="section related">
+      <div class="container">
+        <h2 class="section-title">You Might Also Like</h2>
+        <p class="section-subtitle">Other popular items in {categoryLabel}</p>
+        <div class="related__grid">
+          {related.map(p => (
+            <ProductCard product={p} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
+
+<script>
+  // Image gallery thumbnail switching
+  document.querySelectorAll('.pdp__thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mainImg = document.getElementById('mainImage') as HTMLImageElement;
+      const src = (btn as HTMLElement).dataset.src;
+      const alt = (btn as HTMLElement).dataset.alt;
+      if (mainImg && src) {
+        mainImg.src = src;
+        mainImg.alt = alt || '';
+      }
+      document.querySelectorAll('.pdp__thumb').forEach(t => t.classList.remove('pdp__thumb--active'));
+      btn.classList.add('pdp__thumb--active');
+    });
+  });
+
+  // Star rating interaction
+  document.querySelectorAll('.reviews__form-star').forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = Number((star as HTMLElement).dataset.rating);
+      document.querySelectorAll('.reviews__form-star').forEach((s, i) => {
+        s.textContent = i < rating ? '\u2733' : '\u2734';
+        s.textContent = i < rating ? '★' : '☆';
+        s.classList.toggle('active', i < rating);
+      });
+    });
+  });
+</script>
+
+<style>
+  .pdp-header {
+    padding: 0.75rem 0;
+    background: #fff;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+  }
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text-lighter);
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { color: var(--color-primary); font-weight: 500; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .pdp { padding: var(--space-2xl) 0 var(--space-3xl); }
+  .pdp__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* Gallery */
+  .pdp__gallery { position: sticky; top: 64px; }
+  .pdp__gallery-main {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: #f5f5f5;
+    border: 1px solid var(--color-border);
+  }
+  .pdp__main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+  }
+  .pdp__badge { position: absolute; top: 12px; left: 12px; z-index: 2; }
+
+  .pdp__thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+  .pdp__thumb {
+    flex-shrink: 0;
+    width: 72px;
+    height: 54px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    padding: 0;
+    background: #fff;
+  }
+  .pdp__thumb:hover { border-color: var(--color-primary); }
+  .pdp__thumb--active { border-color: var(--color-primary); box-shadow: 0 0 0 1px var(--color-primary); }
+  .pdp__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .pdp__image-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 400px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: #F0F7FA;
+    border: 1px solid var(--color-border);
+  }
+  .pdp__image-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-lighter); }
+
+  /* Info */
+  .pdp__category-tag { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .pdp__title { font-size: clamp(1.4rem, 3vw, 1.85rem); margin-bottom: 0.6rem; line-height: 1.2; }
+  .pdp__rating { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .pdp__stars { color: var(--color-secondary); font-size: 1rem; letter-spacing: 2px; }
+  .pdp__rating-text { font-size: 0.8rem; color: var(--color-text-light); font-weight: 600; }
+  .pdp__sku { font-size: 0.75rem; color: var(--color-text-lighter); }
+  .pdp__description { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 1.25rem; }
+
+  /* Pricing Cards */
+  .pdp__pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .pdp__price-card {
+    border-radius: var(--radius-md);
+    padding: 1.1rem;
+    border: 2px solid var(--color-border);
+  }
+  .pdp__price-card--rental { border-color: var(--color-primary); background: rgba(15,152,186,0.03); }
+  .pdp__price-card--buy { border-color: var(--color-accent); background: rgba(236,28,35,0.02); }
+  .pdp__price-card-header {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+  }
+  .pdp__price-card--rental .pdp__price-card-header { color: var(--color-primary); }
+  .pdp__price-card--buy .pdp__price-card-header { color: var(--color-accent); }
+  .pdp__price-card-amount { display: flex; align-items: baseline; margin-bottom: 0.6rem; }
+  .pdp__price-value { font-family: var(--font-heading); font-weight: 900; font-size: 2rem; color: var(--color-text); line-height: 1; }
+  .pdp__price-period { font-size: 0.85rem; color: var(--color-text-light); margin-left: 0.2rem; }
+  .pdp__price-perks { margin-bottom: 0.85rem; }
+  .pdp__price-perks li {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    padding: 0.15rem 0 0.15rem 1.1rem;
+    position: relative;
+  }
+  .pdp__price-perks li::before { content: '\2713'; position: absolute; left: 0; color: var(--color-success); font-weight: 700; font-size: 0.7rem; }
+
+  .pdp__quick-contact {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    border: 1px solid var(--color-border);
+  }
+  .pdp__quick-contact svg { flex-shrink: 0; color: var(--color-primary); }
+  .pdp__quick-contact a { color: var(--color-primary); }
+
+  /* Specs & Features */
+  .pdp-details__grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+  .pdp-details__heading { font-size: 1.1rem; margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--color-secondary); }
+  .specs-table__row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); font-size: 0.85rem; }
+  .specs-table__label { color: var(--color-text-light); }
+  .specs-table__value { font-weight: 600; text-align: right; }
+  .features-list__item { display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.4rem 0; font-size: 0.85rem; }
+  .features-list__item svg { flex-shrink: 0; margin-top: 2px; }
+  .included-list__item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; font-size: 0.85rem; }
+  .included-list__item svg { flex-shrink: 0; }
+
+  /* Availability Banner */
+  .pdp__availability {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    background: rgba(15,152,186,0.06);
+    border: 1px solid rgba(15,152,186,0.2);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    color: var(--color-text);
+    margin-bottom: 1.25rem;
+  }
+  .pdp__availability svg { flex-shrink: 0; color: var(--color-primary); }
+
+  /* Product Description */
+  .pdp-description__content {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+  }
+
+  /* Reviews Section */
+  .reviews__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .reviews__summary { display: flex; flex-direction: column; gap: 1.5rem; }
+  .reviews__summary-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    background: #fff;
+    text-align: center;
+  }
+  .reviews__avg {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-text);
+  }
+  .reviews__avg-stars {
+    color: var(--color-secondary);
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    margin: 0.3rem 0;
+  }
+  .reviews__count {
+    font-size: 0.8rem;
+    color: var(--color-text-lighter);
+    margin-bottom: 1rem;
+  }
+  .reviews__bars { text-align: left; }
+  .reviews__bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.2rem 0;
+  }
+  .reviews__bar-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    width: 40px;
+    flex-shrink: 0;
+  }
+  .reviews__bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .reviews__bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 4px;
+  }
+  .reviews__bar-pct {
+    font-size: 0.75rem;
+    color: var(--color-text-lighter);
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Review Form */
+  .reviews__form-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    background: #fff;
+  }
+  .reviews__form-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .reviews__form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .reviews__form-field { margin-bottom: 0.75rem; }
+  .reviews__form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-light);
+    margin-bottom: 0.35rem;
+  }
+  .reviews__form-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+  }
+  .reviews__form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  .reviews__form-textarea { resize: vertical; }
+  .reviews__form-stars {
+    display: flex;
+    gap: 0.25rem;
+    font-size: 1.5rem;
+    color: var(--color-border);
+    cursor: pointer;
+  }
+  .reviews__form-star:hover,
+  .reviews__form-star.active {
+    color: var(--color-secondary);
+  }
+
+  /* Review Cards */
+  .reviews__list { display: flex; flex-direction: column; gap: 1rem; }
+  .reviews__card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    background: #fff;
+  }
+  .reviews__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem;
+  }
+  .reviews__card-name {
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  .reviews__card-date {
+    font-size: 0.75rem;
+    color: var(--color-text-lighter);
+  }
+  .reviews__card-stars {
+    color: var(--color-secondary);
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .reviews__card-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    margin-bottom: 0.6rem;
+  }
+  .reviews__card-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  /* Safety Banner */
+  .safety-banner { background: var(--color-secondary); padding: 0.85rem 0; }
+  .safety-banner__inner { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+  .safety-banner__item { display: flex; align-items: center; gap: 0.4rem; color: var(--color-text); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.02em; }
+
+  /* Related */
+  .related__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+
+  @media (max-width: 1024px) {
+    .pdp-details__grid { grid-template-columns: 1fr 1fr; }
+    .reviews__layout { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .pdp__inner { grid-template-columns: 1fr; gap: 1.5rem; }
+    .pdp__gallery { position: static; }
+    .pdp__main-image { height: 280px; }
+    .pdp__pricing { grid-template-columns: 1fr; }
+    .pdp-details__grid { grid-template-columns: 1fr; }
+    .reviews__layout { grid-template-columns: 1fr; }
+    .reviews__form-row { grid-template-columns: 1fr; }
+    .related__grid { grid-template-columns: 1fr; }
+    .safety-banner__inner { gap: 1.25rem; }
+  }
+</style>
