@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { getProducts, getProductBySlug, getPrimaryImage, getCategoryLabel, getCategorySlug } from '../../lib/supabase';
+import { getProducts, getProductBySlug, getPrimaryImage, getCategoryLabel, getCategorySlug, getFullRentalPrice, getReservationPrice, getBalanceDueOnDelivery } from '../../lib/supabase';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -22,6 +22,10 @@ const related = allProducts
   .filter(p => p.category?.slug === categorySlug && p.id !== product.id)
   .slice(0, 3);
 
+const fullRentalPrice = getFullRentalPrice(product);
+const reservationPrice = getReservationPrice(product);
+const balanceDue = getBalanceDueOnDelivery(product);
+
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -34,7 +38,7 @@ const schemaData = {
     {
       "@type": "Offer",
       "name": "Daily Rental",
-      "price": product.daily_price,
+      "price": fullRentalPrice,
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
       "priceValidUntil": "2027-12-31"
@@ -143,15 +147,25 @@ const schemaData = {
           <div class="pdp__price-card pdp__price-card--rental">
             <div class="pdp__price-card-header">Daily Rental</div>
             <div class="pdp__price-card-amount">
-              <span class="pdp__price-value">${product.daily_price}</span>
+              <span class="pdp__price-value">${fullRentalPrice}</span>
               <span class="pdp__price-period">/day</span>
+            </div>
+            <div class="pdp__reserve-breakdown">
+              <div class="pdp__reserve-row pdp__reserve-row--now">
+                <span class="pdp__reserve-label">Reserve now</span>
+                <span class="pdp__reserve-amount">${reservationPrice}</span>
+              </div>
+              <div class="pdp__reserve-row">
+                <span class="pdp__reserve-label">Balance on delivery</span>
+                <span class="pdp__reserve-amount">${balanceDue}</span>
+              </div>
             </div>
             <ul class="pdp__price-perks">
               <li>Free delivery & setup</li>
               <li>Professional sanitization</li>
               <li>Same-day pickup included</li>
             </ul>
-            <a href="/contact" class="btn btn--primary btn--full">Book Daily Rental</a>
+            <a href="/contact" class="btn btn--primary btn--full">Reserve Now — ${reservationPrice}</a>
           </div>
 
           <div class="pdp__price-card pdp__price-card--buy">
@@ -519,6 +533,25 @@ const schemaData = {
   .pdp__price-card-amount { display: flex; align-items: baseline; margin-bottom: 0.6rem; }
   .pdp__price-value { font-family: var(--font-heading); font-weight: 900; font-size: 2rem; color: var(--color-text); line-height: 1; }
   .pdp__price-period { font-size: 0.85rem; color: var(--color-text-light); margin-left: 0.2rem; }
+  .pdp__reserve-breakdown {
+    margin-bottom: 0.85rem;
+    border: 1px dashed rgba(15,152,186,0.4);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.65rem;
+    background: rgba(15,152,186,0.04);
+  }
+  .pdp__reserve-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.78rem;
+    padding: 0.15rem 0;
+  }
+  .pdp__reserve-label { color: var(--color-text-light); }
+  .pdp__reserve-amount { font-weight: 700; color: var(--color-text); }
+  .pdp__reserve-row--now .pdp__reserve-label { font-weight: 800; color: var(--color-primary); }
+  .pdp__reserve-row--now .pdp__reserve-amount { color: var(--color-primary); font-size: 0.95rem; }
+
   .pdp__price-perks { margin-bottom: 0.85rem; }
   .pdp__price-perks li {
     font-size: 0.75rem;

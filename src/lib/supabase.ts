@@ -94,6 +94,30 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return data;
 }
 
+// Pricing model:
+//  - Customers pay a flat reservation deposit up-front to lock in a booking.
+//  - The full daily rental price scales with the size/value of the item, kept
+//    within a sensible band (small items ~$300/day, large items up to ~$600/day),
+//    rounded to clean $50 increments. The stored `daily_price` is used as the
+//    size proxy since larger items were already priced higher.
+//  - The remaining balance (full price minus the deposit) is collected on delivery.
+const RESERVATION_DEPOSIT = 150;
+const MIN_DAILY_RENTAL = 300;
+const MAX_DAILY_RENTAL = 600;
+
+export function getReservationPrice(_product: Product): number {
+  return RESERVATION_DEPOSIT;
+}
+
+export function getFullRentalPrice(product: Product): number {
+  const scaled = Math.round((product.daily_price * 2) / 50) * 50;
+  return Math.min(MAX_DAILY_RENTAL, Math.max(MIN_DAILY_RENTAL, scaled));
+}
+
+export function getBalanceDueOnDelivery(product: Product): number {
+  return getFullRentalPrice(product) - getReservationPrice(product);
+}
+
 export function getPrimaryImage(product: Product): ProductImage | null {
   if (!product.images || product.images.length === 0) return null;
   return product.images.find(img => img.is_primary) || product.images[0];

@@ -1,6 +1,6 @@
 ---
 import type { Product } from '../lib/supabase';
-import { getPrimaryImage, getCategoryLabel, getCategorySlug } from '../lib/supabase';
+import { getPrimaryImage, getCategoryLabel, getCategorySlug, getFullRentalPrice, getReservationPrice, getBalanceDueOnDelivery } from '../lib/supabase';
 
 interface Props {
   product: Product;
@@ -10,6 +10,9 @@ const { product } = Astro.props;
 const primaryImage = getPrimaryImage(product);
 const categoryLabel = getCategoryLabel(product);
 const categorySlug = getCategorySlug(product);
+const fullRentalPrice = getFullRentalPrice(product);
+const reservationPrice = getReservationPrice(product);
+const balanceDue = getBalanceDueOnDelivery(product);
 ---
 
 <a href={`/products/${product.slug}`} class="product-card card">
@@ -48,12 +51,17 @@ const categorySlug = getCategorySlug(product);
 
     <div class="product-card__pricing">
       <div class="product-card__price-main">
-        <span class="product-card__price-amount">${product.daily_price}</span>
+        <span class="product-card__price-amount">${fullRentalPrice}</span>
         <span class="product-card__price-label">/day</span>
       </div>
       <div class="product-card__price-buy">
         Buy: <strong>${product.buy_price}</strong>
       </div>
+    </div>
+
+    <div class="product-card__reserve">
+      <span class="product-card__reserve-tag">Reserve now</span>
+      <span class="product-card__reserve-text">just <strong>${reservationPrice}</strong> today — ${balanceDue} balance due on delivery</span>
     </div>
 
     <span class="btn btn--primary btn--sm product-card__btn">View Details</span>
@@ -188,6 +196,29 @@ const categorySlug = getCategorySlug(product);
   .product-card__price-buy strong {
     color: var(--color-text-light);
   }
+
+  .product-card__reserve {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: var(--color-text-light);
+  }
+  .product-card__reserve-tag {
+    flex-shrink: 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.62rem;
+    color: var(--color-primary);
+    background: rgba(15,152,186,0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+  }
+  .product-card__reserve-text strong { color: var(--color-text); }
 
   .product-card__btn {
     align-self: stretch;
