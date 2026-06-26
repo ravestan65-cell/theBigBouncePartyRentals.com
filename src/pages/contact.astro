@@ -19,7 +19,7 @@ import '../styles/global.css';
         <h2 class="contact-form__heading">Request a Free Quote</h2>
         <p class="contact-form__subheading">Fill out the form and we'll get back to you within 2 hours.</p>
 
-        <form class="contact-form" id="contact-form">
+        <form class="contact-form" id="contact-form" action="https://submit-form.com/kJ4y3Vadl" method="POST">
           <div class="form-row">
             <div class="form-group"><label class="form-label" for="name">Full Name *</label><input type="text" id="name" name="name" class="form-input" placeholder="Your full name" required /></div>
             <div class="form-group"><label class="form-label" for="phone">Phone *</label><input type="tel" id="phone" name="phone" class="form-input" placeholder="(786) 000-0000" required /></div>
@@ -32,6 +32,7 @@ import '../styles/global.css';
           <div class="form-group"><label class="form-label" for="products">Products of Interest</label><select id="products" name="products" class="form-input"><option value="">Select category</option><option value="bounce-houses">Bounce Houses</option><option value="water-slides">Water Slides</option><option value="party-accessories">Party Accessories</option><option value="multiple">Multiple Items</option></select></div>
           <div class="form-group"><label class="form-label" for="message">Message</label><textarea id="message" name="message" class="form-input form-textarea" placeholder="Tell us about your event..." rows="5"></textarea></div>
           <button type="submit" class="btn btn--primary btn--lg btn--full">Send Quote Request</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
         </form>
       </div>
 
@@ -61,12 +62,53 @@ import '../styles/global.css';
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement;
-  form?.addEventListener('submit', (e) => {
+  const status = document.getElementById('form-status') as HTMLParagraphElement;
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+  function showStatus(message: string, ok: boolean) {
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = false;
+    status.classList.toggle('form-status--ok', ok);
+    status.classList.toggle('form-status--error', !ok);
+  }
+
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const formData = new FormData(form);
-    const name = formData.get('name');
-    alert(`Thank you ${name}! Your quote request has been submitted. We'll get back to you within 2 hours.`);
-    form.reset();
+
+    // Build a JSON payload from the form fields
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+    if (status) status.hidden = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        showStatus(`Thank you ${data.name || ''}! Your quote request has been submitted. We'll get back to you within 2 hours.`, true);
+        form.reset();
+      } else {
+        showStatus('Sorry, something went wrong. Please email us at info@thebigbouncepartyrentals.com.', false);
+      }
+    } catch {
+      showStatus('Network error — please check your connection or email us at info@thebigbouncepartyrentals.com.', false);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Quote Request';
+      }
+    }
   });
 </script>
 
@@ -89,7 +131,25 @@ import '../styles/global.css';
   .form-input:focus { outline: none; border-color: var(--color-primary); background: white; }
   .form-input::placeholder { color: var(--color-text-lighter); }
   .form-textarea { resize: vertical; min-height: 100px; }
-  select.form-input { cursor: pointer; appearance: auto; }
+  select.form-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230F98BA' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 16px;
+  }
+  select.form-input:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230F98BA' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  }
+  select.form-input:invalid { color: var(--color-text-lighter); }
+
+  .form-status { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; }
+  .form-status--ok { background: rgba(34,160,80,0.1); color: #1a7a3c; border: 1px solid rgba(34,160,80,0.3); }
+  .form-status--error { background: rgba(236,28,35,0.08); color: #c01620; border: 1px solid rgba(236,28,35,0.25); }
 
   .contact-sidebar { display: flex; flex-direction: column; gap: 0.75rem; }
   .contact-card { background: white; border-radius: var(--radius-md); padding: 1.25rem; border: 1px solid var(--color-border); }

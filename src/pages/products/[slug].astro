@@ -26,6 +26,8 @@ const fullRentalPrice = getFullRentalPrice(product);
 const reservationPrice = getReservationPrice(product);
 const balanceDue = getBalanceDueOnDelivery(product);
 
+const FORMSPARK_ACTION = "https://submit-form.com/kJ4y3Vadl";
+
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -165,7 +167,7 @@ const schemaData = {
               <li>Professional sanitization</li>
               <li>Same-day pickup included</li>
             </ul>
-            <a href="/contact" class="btn btn--primary btn--full">Reserve Now — ${reservationPrice}</a>
+            <button type="button" class="btn btn--primary btn--full" id="openReserve">Reserve Now — ${reservationPrice}</button>
           </div>
 
           <div class="pdp__price-card pdp__price-card--buy">
@@ -269,15 +271,20 @@ const schemaData = {
           <!-- Leave Review Form -->
           <div class="reviews__form-card">
             <h3 class="reviews__form-title">Leave Your Review</h3>
-            <form class="reviews__form" onsubmit="event.preventDefault()">
+            <form class="reviews__form" id="reviewForm" action={FORMSPARK_ACTION} method="POST">
+              <input type="hidden" name="_subject" value={`Product review — ${product.name}`} />
+              <input type="hidden" name="product" value={product.name} />
+              <input type="hidden" name="sku" value={product.sku} />
+              <input type="hidden" name="rating" id="reviewRating" value="" />
+              <input type="hidden" name="product_url" id="reviewProductUrl" />
               <div class="reviews__form-row">
                 <div class="reviews__form-field">
-                  <label class="reviews__form-label">Name</label>
-                  <input type="text" class="reviews__form-input" placeholder="Your name" />
+                  <label class="reviews__form-label" for="reviewName">Name</label>
+                  <input type="text" id="reviewName" name="name" class="reviews__form-input" placeholder="Your name" required />
                 </div>
                 <div class="reviews__form-field">
-                  <label class="reviews__form-label">Email</label>
-                  <input type="email" class="reviews__form-input" placeholder="Your email" />
+                  <label class="reviews__form-label" for="reviewEmail">Email</label>
+                  <input type="email" id="reviewEmail" name="email" class="reviews__form-input" placeholder="Your email" required />
                 </div>
               </div>
               <div class="reviews__form-field">
@@ -291,10 +298,11 @@ const schemaData = {
                 </div>
               </div>
               <div class="reviews__form-field">
-                <label class="reviews__form-label">Your Review</label>
-                <textarea class="reviews__form-input reviews__form-textarea" placeholder="Share your experience..." rows="4"></textarea>
+                <label class="reviews__form-label" for="reviewText">Your Review</label>
+                <textarea id="reviewText" name="review" class="reviews__form-input reviews__form-textarea" placeholder="Share your experience..." rows="4" required></textarea>
               </div>
               <button type="submit" class="btn btn--primary">Submit Review</button>
+              <p class="reviews__form-status" id="reviewStatus" role="status" aria-live="polite" hidden></p>
             </form>
           </div>
         </div>
@@ -390,6 +398,60 @@ const schemaData = {
       </div>
     </section>
   )}
+
+  <!-- Reserve Now Modal -->
+  <div class="reserve-modal" id="reserveModal" hidden>
+    <div class="reserve-modal__overlay" data-reserve-close></div>
+    <div class="reserve-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="reserveModalTitle">
+      <button type="button" class="reserve-modal__close" data-reserve-close aria-label="Close">&times;</button>
+
+      <div class="reserve-modal__product">
+        {primaryImage?.url ? (
+          <img class="reserve-modal__img" src={primaryImage.url} alt={primaryImage.alt || product.name} width="80" height="60" />
+        ) : (
+          <div class="reserve-modal__img reserve-modal__img--placeholder">{categoryLabel}</div>
+        )}
+        <div class="reserve-modal__info">
+          <div class="reserve-modal__name" id="reserveModalTitle">{product.name}</div>
+          <div class="reserve-modal__price">Reserve now for <strong>${reservationPrice}</strong></div>
+          <div class="reserve-modal__price-sub">${fullRentalPrice}/day total · ${balanceDue} balance on delivery</div>
+        </div>
+      </div>
+
+      <form class="reserve-form" id="reserveForm" action={FORMSPARK_ACTION} method="POST">
+        <input type="hidden" name="_subject" value={`Reservation request — ${product.name}`} />
+        <input type="hidden" name="product" value={product.name} />
+        <input type="hidden" name="sku" value={product.sku} />
+        <input type="hidden" name="reservation_price" value={reservationPrice} />
+        <input type="hidden" name="full_rental_price" value={fullRentalPrice} />
+        <input type="hidden" name="balance_due_on_delivery" value={balanceDue} />
+        <input type="hidden" name="product_url" id="reserveProductUrl" />
+
+        <div class="reserve-form__field">
+          <label class="reserve-form__label" for="reserveName">Full Name *</label>
+          <input type="text" id="reserveName" name="name" class="reserve-form__input" placeholder="Your full name" required />
+        </div>
+        <div class="reserve-form__row">
+          <div class="reserve-form__field">
+            <label class="reserve-form__label" for="reserveEmail">Email *</label>
+            <input type="email" id="reserveEmail" name="email" class="reserve-form__input" placeholder="you@example.com" required />
+          </div>
+          <div class="reserve-form__field">
+            <label class="reserve-form__label" for="reservePhone">Phone *</label>
+            <input type="tel" id="reservePhone" name="phone" class="reserve-form__input" placeholder="(786) 000-0000" required />
+          </div>
+        </div>
+        <div class="reserve-form__field">
+          <label class="reserve-form__label" for="reserveDate">Event Date *</label>
+          <input type="date" id="reserveDate" name="event_date" class="reserve-form__input" required />
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full reserve-form__submit">Reserve Now — ${reservationPrice}</button>
+        <p class="reserve-form__status" id="reserveStatus" role="status" aria-live="polite" hidden></p>
+        <p class="reserve-form__note">You only pay ${reservationPrice} today to lock in your date. The ${balanceDue} balance is paid on delivery.</p>
+      </form>
+    </div>
+  </div>
 </Layout>
 
 <script>
@@ -409,15 +471,114 @@ const schemaData = {
   });
 
   // Star rating interaction
+  let selectedRating = 0;
   document.querySelectorAll('.reviews__form-star').forEach(star => {
     star.addEventListener('click', () => {
       const rating = Number((star as HTMLElement).dataset.rating);
+      selectedRating = rating;
+      const ratingInput = document.getElementById('reviewRating') as HTMLInputElement | null;
+      if (ratingInput) ratingInput.value = String(rating);
       document.querySelectorAll('.reviews__form-star').forEach((s, i) => {
         s.textContent = i < rating ? '\u2733' : '\u2734';
         s.textContent = i < rating ? '★' : '☆';
         s.classList.toggle('active', i < rating);
       });
     });
+  });
+
+  // ---- Shared: submit a form to Formspark as JSON ----
+  function setStatus(el: HTMLElement | null, message: string, ok: boolean) {
+    if (!el) return;
+    el.textContent = message;
+    el.hidden = false;
+    el.classList.toggle('is-ok', ok);
+    el.classList.toggle('is-error', !ok);
+  }
+
+  async function submitFormAsJson(form: HTMLFormElement, statusEl: HTMLElement | null, successMsg: string) {
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    const originalText = btn?.textContent || '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+    if (statusEl) statusEl.hidden = true;
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        setStatus(statusEl, successMsg, true);
+        form.reset();
+        return true;
+      }
+      setStatus(statusEl, 'Sorry, something went wrong. Please email info@thebigbouncepartyrentals.com.', false);
+    } catch {
+      setStatus(statusEl, 'Network error — please email info@thebigbouncepartyrentals.com.', false);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = originalText; }
+    }
+    return false;
+  }
+
+  // ---- Reserve Now modal ----
+  const reserveModal = document.getElementById('reserveModal');
+  const openReserveBtn = document.getElementById('openReserve');
+  const reserveForm = document.getElementById('reserveForm') as HTMLFormElement | null;
+  const reserveStatus = document.getElementById('reserveStatus');
+  const reserveProductUrl = document.getElementById('reserveProductUrl') as HTMLInputElement | null;
+
+  function openReserve() {
+    if (!reserveModal) return;
+    if (reserveProductUrl) reserveProductUrl.value = window.location.href;
+    reserveModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    (document.getElementById('reserveName') as HTMLInputElement | null)?.focus();
+  }
+  function closeReserve() {
+    if (!reserveModal) return;
+    reserveModal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  openReserveBtn?.addEventListener('click', openReserve);
+  reserveModal?.querySelectorAll('[data-reserve-close]').forEach(el =>
+    el.addEventListener('click', closeReserve)
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && reserveModal && !reserveModal.hidden) closeReserve();
+  });
+
+  reserveForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await submitFormAsJson(
+      reserveForm,
+      reserveStatus,
+      "Thank you! Your reservation request has been sent. We'll confirm your date within 2 hours."
+    );
+  });
+
+  // ---- Review form ----
+  const reviewForm = document.getElementById('reviewForm') as HTMLFormElement | null;
+  const reviewStatus = document.getElementById('reviewStatus');
+  const reviewProductUrl = document.getElementById('reviewProductUrl') as HTMLInputElement | null;
+
+  reviewForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (reviewProductUrl) reviewProductUrl.value = window.location.href;
+    if (selectedRating === 0) {
+      setStatus(reviewStatus, 'Please select a star rating before submitting.', false);
+      return;
+    }
+    const ok = await submitFormAsJson(reviewForm, reviewStatus, 'Thank you for your review!');
+    if (ok) {
+      selectedRating = 0;
+      document.querySelectorAll('.reviews__form-star').forEach(s => {
+        s.textContent = '☆';
+        s.classList.remove('active');
+      });
+    }
   });
 </script>
 
@@ -574,6 +735,125 @@ const schemaData = {
   }
   .pdp__quick-contact svg { flex-shrink: 0; color: var(--color-primary); }
   .pdp__quick-contact a { color: var(--color-primary); }
+
+  /* Reserve Now Modal */
+  .reserve-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .reserve-modal[hidden] { display: none; }
+  .reserve-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 30, 40, 0.6);
+    backdrop-filter: blur(2px);
+  }
+  .reserve-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: reservePop 0.18s ease-out;
+  }
+  @keyframes reservePop {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .reserve-modal__close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--color-text-lighter);
+    cursor: pointer;
+    padding: 0.2rem;
+  }
+  .reserve-modal__close:hover { color: var(--color-text); }
+
+  .reserve-modal__product {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .reserve-modal__img {
+    width: 84px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    background: #f5f5f5;
+  }
+  .reserve-modal__img--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-lighter);
+    background: #F0F7FA;
+  }
+  .reserve-modal__name { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; line-height: 1.25; margin-bottom: 0.25rem; }
+  .reserve-modal__price { font-size: 0.9rem; color: var(--color-text); }
+  .reserve-modal__price strong { color: var(--color-primary); font-size: 1.05rem; }
+  .reserve-modal__price-sub { font-size: 0.72rem; color: var(--color-text-lighter); margin-top: 0.15rem; }
+
+  .reserve-form__field { margin-bottom: 0.85rem; }
+  .reserve-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  @media (max-width: 420px) { .reserve-form__row { grid-template-columns: 1fr; } }
+  .reserve-form__label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-light);
+    margin-bottom: 0.3rem;
+  }
+  .reserve-form__input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    background: #FAFAFA;
+    color: var(--color-text);
+    transition: border-color var(--transition-fast);
+  }
+  .reserve-form__input:focus { outline: none; border-color: var(--color-primary); background: #fff; }
+  .reserve-form__submit { margin-top: 0.35rem; }
+  .reserve-form__note { font-size: 0.72rem; color: var(--color-text-lighter); margin-top: 0.6rem; text-align: center; line-height: 1.4; }
+
+  .reserve-form__status,
+  .reviews__form-status {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .reserve-form__status.is-ok,
+  .reviews__form-status.is-ok { background: rgba(34,160,80,0.1); color: #1a7a3c; border: 1px solid rgba(34,160,80,0.3); }
+  .reserve-form__status.is-error,
+  .reviews__form-status.is-error { background: rgba(236,28,35,0.08); color: #c01620; border: 1px solid rgba(236,28,35,0.25); }
 
   /* Specs & Features */
   .pdp-details__grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
