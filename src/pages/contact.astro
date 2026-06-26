@@ -73,6 +73,13 @@ import '../styles/global.css';
     status.classList.toggle('form-status--error', !ok);
   }
 
+  // Open the native date picker when clicking anywhere on a date field
+  document.querySelectorAll('input[type="date"]').forEach((input) => {
+    const el = input as HTMLInputElement & { showPicker?: () => void };
+    el.addEventListener('click', () => { try { el.showPicker?.(); } catch {} });
+    el.addEventListener('focus', () => { try { el.showPicker?.(); } catch {} });
+  });
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 

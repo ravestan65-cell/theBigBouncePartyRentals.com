@@ -550,6 +550,13 @@ const schemaData = {
     if (e.key === 'Escape' && reserveModal && !reserveModal.hidden) closeReserve();
   });
 
+  // Open the native date picker when clicking anywhere on a date field
+  document.querySelectorAll('input[type="date"]').forEach((input) => {
+    const el = input as HTMLInputElement & { showPicker?: () => void };
+    el.addEventListener('click', () => { try { el.showPicker?.(); } catch {} });
+    el.addEventListener('focus', () => { try { el.showPicker?.(); } catch {} });
+  });
+
   reserveForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     await submitFormAsJson(
